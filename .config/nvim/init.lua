@@ -5,9 +5,6 @@ require("opts")
 require("lsp")
 require("treesitter")
 
-function setColors() 
-	-- vim.cmd('colorscheme rose-pine')
-	vim.cmd.colorscheme("rose-pine")
-end
+vim.cmd.colorscheme("rose-pine")
 
 setColors()
