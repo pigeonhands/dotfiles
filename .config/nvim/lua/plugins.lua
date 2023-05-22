@@ -2,6 +2,8 @@ require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
     -- > theme
     use({'rose-pine/neovim', as = 'rose-pine'})
+	use ({ 'projekt0n/github-nvim-theme' })
+
     -- > fucntionality
 	use 'lewis6991/gitsigns.nvim'
 	use 'nvim-tree/nvim-tree.lua'
@@ -24,6 +26,7 @@ require('packer').startup(function(use)
         end
     }
 	use 'windwp/nvim-autopairs'
+	use "akinsho/toggleterm.nvim"
 
 	--> ui 
 	use {
@@ -100,3 +103,5 @@ require'alpha'.setup(require'alpha.themes.dashboard'.config)
 require("which-key").setup()
 vim.o.timeout = true
 vim.o.timeoutlen = 300
+
+require("toggleterm").setup()

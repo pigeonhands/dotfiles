@@ -1,4 +1,3 @@
-
 local telescope = require('telescope.builtin')
 vim.keymap.set('n', '<C-p>', telescope.git_files, {})
 vim.keymap.set('n', '<leader>ff', telescope.find_files, {})
@@ -12,3 +11,7 @@ vim.api.nvim_set_keymap("n", "<leader>t", "<cmd>NvimTreeToggle<CR>",
                         {noremap = true})
 vim.api.nvim_set_keymap("n", "<leader>fm", "<cmd>Neoformat<CR>",
                         {noremap = true})
+
+vim.keymap.set('n', '<leader>`', '<cmd>ToggleTerm<CR>', { noremap = true })
+-- vim.keymap.set('t', '<leader>`', '<cmd>ToggleTerm<CR>', { noremap = true })
+vim.keymap.set('t', '<ESC>', '<C-\\><C-n>', { noremap = true })

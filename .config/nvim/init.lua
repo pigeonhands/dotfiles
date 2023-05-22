@@ -6,4 +6,4 @@ require("lsp")
 require("treesitter")
 
 vim.cmd.colorscheme("rose-pine")
-
+--vim.cmd.colorscheme("github_dark")
