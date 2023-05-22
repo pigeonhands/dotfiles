@@ -17,3 +17,5 @@ alias ll='exa -lah'
 alias ls='exa --color=auto'
 
 export MANPAGER='nvim +Man!'
+export NVM_DIR="$HOME/.nvm"
+

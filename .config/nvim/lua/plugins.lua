@@ -35,7 +35,8 @@ require('packer').startup(function(use)
 	use 'folke/which-key.nvim'
 	use 'xiyaowong/transparent.nvim'
 
-    -- > lsp
+    -- > code / LSP
+
     use 'sbdchd/neoformat'
     use "williamboman/mason.nvim"
     use "williamboman/mason-lspconfig.nvim"
@@ -57,6 +58,8 @@ require('packer').startup(function(use)
     use 'hrsh7th/vim-vsnip'
 
     use 'simrat39/rust-tools.nvim'
+
+	use "rafamadriz/friendly-snippets"
 end)
 
 require("mason").setup()
