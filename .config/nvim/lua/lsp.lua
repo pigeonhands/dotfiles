@@ -59,32 +59,37 @@ cmp.setup({
 })
 
 
-
-local rt = require("rust-tools")
-
-rt.setup({
-  server = {
-    on_attach = function(_, bufnr)
-      -- Hover actions
-      vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-      -- Code action groups
-      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-    end,
-  },
-})
-
-require'lspconfig'.zls.setup{
-	zig_lib_path = "/usr/local/share/zig/lib/"	
+require("mason-lspconfig").setup_handlers {
+	function (server_name) -- default handler (optional)
+		require("lspconfig")[server_name].setup {}
+	end,
+	["rust_analyzer"] = function ()
+		require("rust-tools").setup({
+			server = {
+				on_attach = function(_, bufnr)
+					-- Hover actions
+					vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+					-- Code action groups
+					vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+				end,
+			},
+		})
+	end,
+	["zls"] = function ()
+		require'lspconfig'.zls.setup ({
+			zig_lib_path = "/usr/local/share/zig/lib/"	
+		})
+	end,
+	['pyright'] = function() 
+		require'lspconfig'.pyright.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+			settings={
+				python = {
+					pythonPath="/usr/bin/python3"
+				},
+				pyright = {}
+			}
+		})
+	end,
 }
-
-require'lspconfig'.pyright.setup({
-  capabilities = capabilities,
-  on_attach = on_attach,
-  settings={
-      python = {
-      pythonPath="/usr/bin/python3"
-      },
-      pyright = {}
-  }
-})
-
