@@ -1,22 +1,33 @@
-require('packer').startup(function(use)
-    use 'wbthomason/packer.nvim'
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+require('lazy').setup({
+  'wbthomason/packer.nvim',
     -- > theme
-    use({'rose-pine/neovim', as = 'rose-pine'})
-	use ({ 'projekt0n/github-nvim-theme' })
+  {'rose-pine/neovim', as = 'rose-pine'},
+	{ 'projekt0n/github-nvim-theme' },
 
     -- > fucntionality
-	use 'lewis6991/gitsigns.nvim'
-	use 'nvim-tree/nvim-tree.lua'
-	use 'nvim-tree/nvim-web-devicons'
-    use {
-        'nvim-telescope/telescope.nvim',
-        tag = '0.1.0',
-        -- or                            , branch = '0.1.x',
-        requires = {{'nvim-lua/plenary.nvim'}}
-    }
-    use {
+	'lewis6991/gitsigns.nvim',
+	'nvim-tree/nvim-tree.lua',
+	'nvim-tree/nvim-web-devicons',
+  {
+    'nvim-telescope/telescope.nvim', tag = '0.1.1',
+      dependencies = { 'nvim-lua/plenary.nvim' }
+    },
+    {
         "folke/trouble.nvim",
-        requires = "nvim-tree/nvim-web-devicons",
+        dependencies = "nvim-tree/nvim-web-devicons",
         config = function()
             require("trouble").setup {
                 -- your configuration comes here
@@ -24,46 +35,46 @@ require('packer').startup(function(use)
                 -- refer to the configuration section below
             }
         end
-    }
-	use 'windwp/nvim-autopairs'
-	use "akinsho/toggleterm.nvim"
+    },
+	'windwp/nvim-autopairs',
+	"akinsho/toggleterm.nvim",
 
 	--> ui 
-	use {
+  {
 		'nvim-lualine/lualine.nvim',
-		requires = { 'nvim-tree/nvim-web-devicons', opt = true }
-	}
-	use 'RRethy/vim-illuminate'
-	use 'goolord/alpha-nvim'
-	use 'folke/which-key.nvim'
-	use 'xiyaowong/transparent.nvim'
+		dependencies = { 'nvim-tree/nvim-web-devicons', opt = true }
+	},
+	'RRethy/vim-illuminate',
+	'goolord/alpha-nvim',
+	'folke/which-key.nvim',
+	'xiyaowong/transparent.nvim',
 
     -- > code / LSP
 
-    use 'sbdchd/neoformat'
-    use "williamboman/mason.nvim"
-    use "williamboman/mason-lspconfig.nvim"
-    use "neovim/nvim-lspconfig"
-    use ({'nvim-treesitter/nvim-treesitter', run = {":TSUpdate"}})
+    'sbdchd/neoformat',
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+    "neovim/nvim-lspconfig",
+    {'nvim-treesitter/nvim-treesitter', run = {":TSUpdate"}},
 
     -- Completion framework:
-    use 'hrsh7th/nvim-cmp'
+    'hrsh7th/nvim-cmp',
 
     -- LSP completion source:
-    use 'hrsh7th/cmp-nvim-lsp'
+    'hrsh7th/cmp-nvim-lsp',
 
     -- Useful completion sources:
-    use 'hrsh7th/cmp-nvim-lua'
-    use 'hrsh7th/cmp-nvim-lsp-signature-help'
-    use 'hrsh7th/cmp-vsnip'
-    use 'hrsh7th/cmp-path'
-    use 'hrsh7th/cmp-buffer'
-    use 'hrsh7th/vim-vsnip'
+    'hrsh7th/cmp-nvim-lua',
+    'hrsh7th/cmp-nvim-lsp-signature-help',
+    'hrsh7th/cmp-vsnip',
+    'hrsh7th/cmp-path',
+    'hrsh7th/cmp-buffer',
+    'hrsh7th/vim-vsnip',
 
-    use 'simrat39/rust-tools.nvim'
+    'simrat39/rust-tools.nvim',
 
-	use "rafamadriz/friendly-snippets"
-end)
+	  "rafamadriz/friendly-snippets",
+})
 
 require("mason").setup()
 require("mason-lspconfig").setup()

@@ -76,9 +76,17 @@ require("mason-lspconfig").setup_handlers {
 		})
 	end,
 	["zls"] = function ()
-		require'lspconfig'.zls.setup ({
-			zig_lib_path = "/usr/local/share/zig/lib/"	
-		})
+    local lsp = require('lspconfig')
+    if vim.fn.has('win64') then
+      lsp.zls.setup ({
+        zig_lib_path = "C:\\ProgramData\\chocolatey\\lib\zig\\tools\\zig-windows-x86_64-0.10.1\\lib"	
+      })
+    else
+      lsp.zls.setup ({
+        zig_lib_path = "/usr/local/share/zig/lib/"	
+      })
+    end
+		
 	end,
 	['pyright'] = function() 
 		require'lspconfig'.pyright.setup({
