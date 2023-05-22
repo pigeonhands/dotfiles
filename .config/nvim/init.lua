@@ -7,4 +7,3 @@ require("treesitter")
 
 vim.cmd.colorscheme("rose-pine")
 
-setColors()
