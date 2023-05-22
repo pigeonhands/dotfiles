@@ -9,8 +9,10 @@ vim.opt.wrap = false
 vim.opt.nu = true
 vim.opt.termguicolors = true
 
-vim.opt.hlsearch = false
+vim.opt.hlsearch = true
 vim.opt.incsearch = true
+-- Ctrl + / clear search
+vim.keymap.set("n", "<C-_>", ":noh<CR>")
 vim.opt.scrolloff = 8
 
 -- for nerdtree
