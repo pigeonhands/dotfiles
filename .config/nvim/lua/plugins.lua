@@ -74,6 +74,7 @@ require('lazy').setup({
     'simrat39/rust-tools.nvim',
 
 	  "rafamadriz/friendly-snippets",
+    'nvim-telescope/telescope-ui-select.nvim',
 })
 
 require("mason").setup()
@@ -116,3 +117,5 @@ vim.o.timeout = true
 vim.o.timeoutlen = 300
 
 require("toggleterm").setup()
+
+require("telescope").load_extension("ui-select")
