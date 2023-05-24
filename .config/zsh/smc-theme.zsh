@@ -20,18 +20,31 @@ function mygit() {
   fi
 }
 
+function preexec() {
+	timer=${timer:-$SECONDS}
+}
+
+function precmd() {
+	if [ $timer ]; then
+		timer_show=$(($SECONDS - $timer))
+		# export RPROMPT=$'%{\e[35m%}${timer_show}s%{$reset_color%}'
+		export RPROMPT=$'%(?:%{\e[35m%}${timer_show}s:%{$fg[red]%}${timer_show}s)%{$reset_color%}'
+		unset timer
+	else
+		export RPROMPT=""
+	fi
+}
+
 function retcode() {}
 
 local user_string="%{$fg[yellow]%}%B%n%b$fg[white]@%{$fg[blue]%}%B%m%b"
 local path_string="%{$fg[white]%}%B%~%b"
 local user_and_path_string="${user_string}:${path_string}"
 local prompt_string="%(!.#.$)"
-local first_line='%{$fg[green]%}┬─$(virtualenv_prompt_info)%{$fg[green]%}[${user_and_path_string}%{$fg[green]%}]$(mygit)'
+local first_line='%{$fg[green]%}┬─$(virtualenv_prompt_info)%{$fg[green]%}[${user_and_path_string}%{$fg[green]%}]─[%{$fg[cyan]%}$(date +%X)%{$fg[green]%}]$(mygit)'
 local second_line='%{$fg[green]%}╰─>%{$fg[red]%}%1{${prompt_string}%}'
 
 
 NEWLINE=$'\n'
 PROMPT="${first_line}${NEWLINE}${second_line}%b%{$reset_color%} "
-RPROMPT=$'%{\e[35m%}$(date +%X)%{$reset_color%}'
-
 PS2=$' \e[0;34m%}%B>%{\e[0m%}%b '
