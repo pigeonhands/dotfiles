@@ -117,7 +117,7 @@ require('nvim-autopairs').setup()
 require'alpha'.setup(require'alpha.themes.dashboard'.config)
 require("which-key").setup()
 vim.o.timeout = true
-vim.o.timeoutlen = 300
+vim.o.timeoutlen = 500
 
 require("toggleterm").setup()
 
