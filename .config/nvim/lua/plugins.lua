@@ -51,11 +51,12 @@ require('lazy').setup({
 
     -- > code / LSP
 
-    'sbdchd/neoformat',
+    -- 'sbdchd/neoformat',
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
     {'nvim-treesitter/nvim-treesitter', run = {":TSUpdate"}},
+	{'nvim-treesitter/nvim-treesitter-context'},
 
     -- Completion framework:
     'hrsh7th/nvim-cmp',
@@ -84,7 +85,7 @@ require('gitsigns').setup {
 	current_line_blame = true,
 	current_line_blame_opts = {
     virt_text = true,
-    virt_text_pos = 'right_align', -- 'eol' | 'overlay' | 'right_align'
+    virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
     delay = 500,
     ignore_whitespace = false,
   },
@@ -107,6 +108,8 @@ require("nvim-tree").setup({
     dotfiles = true,
   },
 })
+require'treesitter-context'.setup{
+}
 
 require('lualine').setup()
 require('nvim-autopairs').setup()

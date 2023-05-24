@@ -19,3 +19,7 @@ alias ls='exa --color=auto'
 export MANPAGER='nvim +Man!'
 export NVM_DIR="$HOME/.nvm"
 
+function last_history_item
+    echo $history[1]
+end
+abbr -a !! --position anywhere --function last_history_item

@@ -1,2 +1,3 @@
 copy_files.sh
 .config/nvim/plugin
+*.zwc
