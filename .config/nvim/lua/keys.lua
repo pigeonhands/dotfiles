@@ -33,10 +33,6 @@ vim.keymap.set("n", "<leader>y", "\"+y")
 vim.keymap.set("n", "<leader>Y", "\"+Y")
 vim.keymap.set("v", "<leader>y", "\"+y")
 
--- search follows cursor
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
-
 --paste but retain buffer
 vim.keymap.set("x", "<leader>p", "\"_dP")
 
@@ -46,5 +42,5 @@ vim.keymap.set('n', "<C-u>", "<C-u>zz", {noremap = true})
 
 -- center screen wwhen searching and unfold line (zv)
 vim.keymap.set('n', "n", "nzzzv", {noremap = true})
-vim.keymap.set('n', "n", "Nzzzv", {noremap = true})
+vim.keymap.set('n', "N", "Nzzzv", {noremap = true})
 
