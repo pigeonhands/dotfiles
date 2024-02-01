@@ -1,4 +1,5 @@
 local cmp = require'cmp'
+local lspkind = require('lspkind')
 cmp.setup({
   preselect = cmp.PreselectMode.None,
   -- Enable LSP snippets
@@ -21,7 +22,7 @@ cmp.setup({
     ['<C-e>'] = cmp.mapping.close(),
     ['<CR>'] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Insert,
-      select = true,
+      select = false,
     })
   },
   -- Installed sources:
@@ -39,17 +40,32 @@ cmp.setup({
       documentation = cmp.config.window.bordered(),
   },
   formatting = {
-      fields = {'menu', 'abbr', 'kind'},
-      format = function(entry, item)
-          local menu_icon ={
-              nvim_lsp = 'λ',
-              vsnip = '⋗',
-              buffer = 'Ω',
-              path = '🖫',
-          }
-          item.menu = menu_icon[entry.source.name]
-          return item
-      end,
+      fields = {
+        -- 'menu' ]--, 
+        'abbr', 
+        'kind'
+      },
+      format = lspkind.cmp_format({
+        mode = "symbol_text",
+        menu = ({
+          buffer = "[Buffer]",
+          nvim_lsp = "[LSP]",
+          luasnip = "[LuaSnip]",
+          nvim_lua = "[Lua]",
+          latex_symbols = "[Latex]",
+        })
+      }),
+      
+      --format = function(entry, item)
+      --    local menu_icon ={
+      --        nvim_lsp = 'λ',
+      --        vsnip = '⋗',
+      --        buffer = 'Ω',
+      --        path = '🖫',
+      --    }
+      --    item.menu = menu_icon[entry.source.name]
+      --    return item
+      --end,
   },
 })
 

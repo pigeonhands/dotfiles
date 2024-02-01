@@ -61,6 +61,7 @@ require('lazy').setup({
 
 	-- Completion framework:
 	'hrsh7th/nvim-cmp',
+	'onsails/lspkind.nvim',
 
 	-- LSP completion source:
 	'hrsh7th/cmp-nvim-lsp',
