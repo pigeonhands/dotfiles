@@ -99,7 +99,18 @@ require('lazy').setup({
 	'hrsh7th/cmp-buffer',
 	'hrsh7th/vim-vsnip',
 
-	'simrat39/rust-tools.nvim',
+	{
+		'mrcjkb/rustaceanvim',
+		version = '^4', -- Recommended
+		ft = { 'rust' },
+	},
+	{
+		'saecki/crates.nvim',
+		tag = 'stable',
+		config = function()
+			require('crates').setup()
+		end,
+	},
 
 	"rafamadriz/friendly-snippets",
 	'nvim-telescope/telescope-ui-select.nvim',
