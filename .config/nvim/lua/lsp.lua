@@ -127,3 +127,40 @@ require("mason-lspconfig").setup_handlers {
 		}
 	end
 }
+
+vim.g.rustaceanvim = {
+  -- Plugin configuration
+  tools = {
+  },
+  -- LSP configuration
+  server = {
+    on_attach = function(client, bufnr)
+      -- you can also put keymaps in here
+    end,
+    settings = {
+      -- rust-analyzer language server configuration
+      ['rust-analyzer'] = {
+        assist = {
+            importEnforceGranularity = true,
+            importPrefix = 'crate',
+        },
+        cargo = {
+            allFeatures = true,
+        },
+        checkOnSave = {
+            command = 'clippy',
+        },
+        inlayHints = { locationLinks = true },
+        diagnostics = {
+            enable = true,
+            experimental = {
+                enable = true,
+            },
+        },
+      },
+    },
+  },
+  -- DAP configuration
+  dap = {
+  },
+}
