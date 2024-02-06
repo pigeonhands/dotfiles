@@ -108,3 +108,13 @@ map('n', '<Space>bw', '<Cmd>BufferOrderByWindowNumber<CR>', opts)
 -- Other:
 -- :BarbarEnable - enables barbar (enabled by default)
 -- :BarbarDisable - very bad command, should never be used
+--
+--
+-- debugger
+
+vim.keymap.set("n", "<Leader>dt", ':DapToggleBreakpoint<CR>')
+vim.keymap.set("n", "<Leader>dx", ':DapTerminate<CR>')
+vim.keymap.set("n", "<Leader>dc", ':DapContinue<CR>')
+vim.keymap.set("n", "<Leader>do", ':DapStepOver<CR>')
+vim.keymap.set("n", "<Leader>di", ':DapStepInto<CR>')
+vim.keymap.set("n", "<Leader>du", ':DapStepOut<CR>')
