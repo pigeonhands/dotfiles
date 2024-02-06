@@ -66,23 +66,88 @@ require('lazy').setup({
 			cmdline = {
 				view = "cmdline"
 			},
-		  -- add any options here
+			-- add any options here
 		},
 		dependencies = {
-		  -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-		  "MunifTanjim/nui.nvim",
-		  -- OPTIONAL:
-		  --   `nvim-notify` is only needed, if you want to use the notification view.
-		  --   If not available, we use `mini` as the fallback
-		  "rcarriga/nvim-notify",
-		  }
-	  },
+			-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+			"MunifTanjim/nui.nvim",
+			-- OPTIONAL:
+			--   `nvim-notify` is only needed, if you want to use the notification view.
+			--   If not available, we use `mini` as the fallback
+			{
+				"rcarriga/nvim-notify",
+				opts = {
+					background_colour = "#000000"
+				}
+			},
+		}
+	},
 
 	-- > code / LSP
 
+	{
+		'mrcjkb/rustaceanvim',
+		version = '^4', -- Recommended
+		ft = { 'rust' },
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"mfussenegger/nvim-dap",
+			--`` { "lvimuser/lsp-inlayhints.nvim", opts = {} } ,
+		},
+		config = function()
+			vim.g.rustaceanvim = {
+				-- Plugin configuration
+				tools = {
+					hover_actions = {
+						auto_focus = true,
+					},
+				},
+				-- LSP configuration
+				server = {
+					on_attach = function(client, bufnr)
+						-- you can also put keymaps in here
+						vim.lsp.inlay_hint.enable(bufnr, true)
+					end,
+					settings = {
+						-- rust-analyzer language server configuration
+						['rust-analyzer'] = {
+							assist = {
+								importEnforceGranularity = true,
+								importPrefix = 'crate',
+							},
+							cargo = {
+								allFeatures = true,
+							},
+							checkOnSave = {
+								command = 'clippy',
+							},
+							inlayHints = { locationLinks = true },
+							diagnostics = {
+								enable = true,
+								experimental = {
+									enable = true,
+								},
+							},
+						},
+					},
+				},
+				-- DAP configuration
+				dap = {
+				},
+			}
+		end
+	},
+	{
+		'saecki/crates.nvim',
+		tag = 'stable',
+		config = function()
+			require('crates').setup()
+		end,
+	},
 	-- 'sbdchd/neoformat',
 	"williamboman/mason.nvim",
 	"williamboman/mason-lspconfig.nvim",
+
 	"neovim/nvim-lspconfig",
 	{ 'nvim-treesitter/nvim-treesitter',        run = { ":TSUpdate" } },
 	{ 'nvim-treesitter/nvim-treesitter-context' },
@@ -102,43 +167,6 @@ require('lazy').setup({
 	'hrsh7th/cmp-buffer',
 	'hrsh7th/vim-vsnip',
 
-	{
-		'mrcjkb/rustaceanvim',
-		version = '^4', -- Recommended
-		ft = { 'rust' },
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"mfussenegger/nvim-dap",
-			{
-			  "lvimuser/lsp-inlayhints.nvim",
-			  opts = {}
-			},
-		  },
-		config = function()
-			vim.g.rustaceanvim = {
-			  inlay_hints = {
-				highlight = "NonText",
-			  },
-			  tools = {
-				hover_actions = {
-				  auto_focus = true,
-				},
-			  },
-			  server = {
-				on_attach = function(client, bufnr)
-				  require("lsp-inlayhints").on_attach(client, bufnr)
-				end
-			  }
-			}
-		  end
-	},
-	{
-		'saecki/crates.nvim',
-		tag = 'stable',
-		config = function()
-			require('crates').setup()
-		end,
-	},
 
 	"rafamadriz/friendly-snippets",
 	'nvim-telescope/telescope-ui-select.nvim',
@@ -146,23 +174,22 @@ require('lazy').setup({
 
 require("noice").setup({
 	lsp = {
-	  -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-	  override = {
-		["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-		["vim.lsp.util.stylize_markdown"] = true,
-		["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
-	  },
+		-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+		override = {
+			["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+			["vim.lsp.util.stylize_markdown"] = true,
+			["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+		},
 	},
 	-- you can enable a preset for easier configuration
 	presets = {
-	  bottom_search = true, -- use a classic bottom cmdline for search
-	  command_palette = true, -- position the cmdline and popupmenu together
-	  long_message_to_split = true, -- long messages will be sent to a split
-	  inc_rename = false, -- enables an input dialog for inc-rename.nvim
-	  lsp_doc_border = false, -- add a border to hover docs and signature help
+		bottom_search = true,   -- use a classic bottom cmdline for search
+		command_palette = true, -- position the cmdline and popupmenu together
+		long_message_to_split = true, -- long messages will be sent to a split
+		inc_rename = false,     -- enables an input dialog for inc-rename.nvim
+		lsp_doc_border = false, -- add a border to hover docs and signature help
 	},
-	
-  })
+})
 
 require("mason").setup()
 require("mason-lspconfig").setup()
