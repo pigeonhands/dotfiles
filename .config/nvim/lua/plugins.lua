@@ -119,6 +119,10 @@ require('lazy').setup({
 
 	-- > code / LSP
 
+	"williamboman/mason.nvim",
+	"williamboman/mason-lspconfig.nvim",
+
+	"neovim/nvim-lspconfig",
 	{
 		'mrcjkb/rustaceanvim',
 		version = '^4', -- Recommended
@@ -129,46 +133,6 @@ require('lazy').setup({
 			--`` { "lvimuser/lsp-inlayhints.nvim", opts = {} } ,
 		},
 		config = function()
-			vim.g.rustaceanvim = {
-				-- Plugin configuration
-				tools = {
-					hover_actions = {
-						auto_focus = true,
-					},
-				},
-				-- LSP configuration
-				server = {
-					on_attach = function(client, bufnr)
-						-- you can also put keymaps in here
-						vim.lsp.inlay_hint.enable(bufnr, true)
-					end,
-					settings = {
-						-- rust-analyzer language server configuration
-						['rust-analyzer'] = {
-							assist = {
-								importEnforceGranularity = true,
-								importPrefix = 'crate',
-							},
-							cargo = {
-								allFeatures = true,
-							},
-							checkOnSave = {
-								command = 'clippy',
-							},
-							inlayHints = { locationLinks = true },
-							diagnostics = {
-								enable = true,
-								experimental = {
-									enable = true,
-								},
-							},
-						},
-					},
-				},
-				-- DAP configuration
-				dap = {
-				},
-			}
 		end
 	},
 	{
@@ -179,10 +143,6 @@ require('lazy').setup({
 		end,
 	},
 	-- 'sbdchd/neoformat',
-	"williamboman/mason.nvim",
-	"williamboman/mason-lspconfig.nvim",
-
-	"neovim/nvim-lspconfig",
 	{ 'nvim-treesitter/nvim-treesitter',        run = { ":TSUpdate" } },
 	{ 'nvim-treesitter/nvim-treesitter-context' },
 

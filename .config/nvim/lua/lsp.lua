@@ -27,13 +27,13 @@ cmp.setup({
 	},
 	-- Installed sources:
 	sources = {
-		{ name = 'path' },                     -- file paths
+		{ name = 'path' },                                 -- file paths
 		{ name = 'nvim_lsp',               keyword_length = 3 }, -- from language server
-		{ name = 'nvim_lsp_signature_help' },  -- display function signatures with current parameter emphasized
+		{ name = 'nvim_lsp_signature_help' },              -- display function signatures with current parameter emphasized
 		{ name = 'nvim_lua',               keyword_length = 2 }, -- complete neovim's Lua runtime API such vim.lsp.*
 		{ name = 'buffer',                 keyword_length = 2 }, -- source current buffer
 		{ name = 'vsnip',                  keyword_length = 2 }, -- nvim-cmp source for vim-vsnip
-		{ name = 'calc' },                     -- source for math calculation
+		{ name = 'calc' },                                 -- source for math calculation
 	},
 	window = {
 		completion = cmp.config.window.bordered(),
@@ -69,10 +69,29 @@ cmp.setup({
 	},
 })
 
+local lsp_cmds = vim.api.nvim_create_augroup('lsp_cmds', { clear = true })
+vim.api.nvim_create_autocmd('LspAttach', {
+	group = lsp_cmds,
+	desc = 'Lsp inlay hint attach',
+	callback = function(event)
+		local bufnr = event.buf
+		local client = vim.lsp.get_client_by_id(event.data.client_id)
+
+		if client == nil then
+			return
+		end
+
+		-- you can also put keymaps in here
+		if client.server_capabilities.inlayHintProvider then
+			vim.lsp.inlay_hint.enable(bufnr, true)
+		end
+	end
+})
 
 require("mason-lspconfig").setup_handlers {
 	function(server_name) -- default handler (optional)
-		require("lspconfig")[server_name].setup {}
+		require("lspconfig")[server_name].setup {
+		}
 	end,
 	["rust_analyzer"] = function()
 		-- Do not setup, handled by rustaceanvim
@@ -121,9 +140,53 @@ require("mason-lspconfig").setup_handlers {
 					telemetry = {
 						enable = false,
 					},
+					hint = {
+						enable = true
+					}
 				},
 			},
 
 		}
 	end
+}
+
+vim.g.rustaceanvim = {
+	-- Plugin configuration
+	tools = {
+		hover_actions = {
+			auto_focus = true,
+		},
+	},
+	-- LSP configuration
+	server = {
+		on_attach = function(client, bufnr)
+			-- you can also put keymaps in here
+			-- vim.lsp.inlay_hint.enable(bufnr, true)
+		end,
+		settings = {
+			-- rust-analyzer language server configuration
+			['rust-analyzer'] = {
+				assist = {
+					importEnforceGranularity = true,
+					importPrefix = 'crate',
+				},
+				cargo = {
+					allFeatures = true,
+				},
+				checkOnSave = {
+					command = 'clippy',
+				},
+				inlayHints = { locationLinks = true },
+				diagnostics = {
+					enable = true,
+					experimental = {
+						enable = true,
+					},
+				},
+			},
+		},
+	},
+	-- DAP configuration
+	dap = {
+	},
 }
