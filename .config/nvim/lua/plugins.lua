@@ -14,8 +14,9 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
 	'wbthomason/packer.nvim',
 	-- > theme
-	{ 'rose-pine/neovim',           as = 'rose-pine' },
+	-- { 'rose-pine/neovim',           as = 'rose-pine' },
 	{ 'projekt0n/github-nvim-theme' },
+	{ "folke/tokyonight.nvim",      as = 'tokyonight' },
 
 	-- > fucntionality
 	'lewis6991/gitsigns.nvim',
@@ -54,6 +55,39 @@ require('lazy').setup({
 	{
 		'nvim-lualine/lualine.nvim',
 		dependencies = { 'nvim-tree/nvim-web-devicons', opt = true }
+	},
+	{
+		'romgrk/barbar.nvim',
+		dependencies = {
+			'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
+			'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
+		},
+		init = function() vim.g.barbar_auto_setup = false end,
+		opts = {
+			-- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:
+			-- animation = true,
+			-- insert_at_start = true,
+			-- …etc.
+			tabpages = true,
+			icons = {
+				gitsigns = {
+					added = { enabled = true, icon = '+' },
+					changed = { enabled = true, icon = '~' },
+					deleted = { enabled = true, icon = '-' },
+				},
+				diagnostics = {
+					[vim.diagnostic.severity.ERROR] = { enabled = true, icon = 'ﬀ' },
+					[vim.diagnostic.severity.WARN] = { enabled = false },
+					[vim.diagnostic.severity.INFO] = { enabled = false },
+					[vim.diagnostic.severity.HINT] = { enabled = true },
+				},
+				pinned = { button = '', filename = true },
+			},
+			sidebar_filetypes = {
+				NvimTree = true
+			}
+		},
+		version = '^1.0.0', -- optional: only update when a new 1.x version is released
 	},
 	'RRethy/vim-illuminate',
 	'goolord/alpha-nvim',

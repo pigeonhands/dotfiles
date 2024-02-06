@@ -5,5 +5,5 @@ require("opts")
 require("lsp")
 require("treesitter")
 
-vim.cmd.colorscheme("rose-pine")
---vim.cmd.colorscheme("github_dark")
+-- vim.cmd.colorscheme("rose-pine")
+vim.cmd.colorscheme("tokyonight")
