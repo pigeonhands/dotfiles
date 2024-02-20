@@ -1,8 +1,7 @@
 
 alias grep='rg'
-alias find=fdfind
-alias cat='batcat --style=plain'
-alias bat=batcat
+alias find=fd
+alias cat='bat --style=plain'
 #alias cat=bat
 alias l='exa'
 alias la='exa -a'

@@ -33,10 +33,10 @@ vim.keymap.set("n", "<leader>fr", telescope.lsp_references, {})
 vim.keymap.set("n", "<leader>fs", telescope.treesitter, {})
 
 -- Git
-vim.keymap.set("n", "ggc", telescope.git_commits)
-vim.keymap.set("n", "ggs", telescope.git_status)
+vim.keymap.set("n", "gtc", telescope.git_commits)
+vim.keymap.set("n", "gts", telescope.git_status)
 
-vim.keymap.set("n", "<leader>t", "<cmd>NvimTreeToggle<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>t", "<cmd>Neotree toggle<CR>", { noremap = true })
 -- vim.keymap.set("n", "<leader>fm", "<cmd>Neoformat<CR>" {noremap = true})
 
 vim.keymap.set("n", "<leader>`", "<cmd>ToggleTerm<CR>", { noremap = true })

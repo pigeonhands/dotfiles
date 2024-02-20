@@ -1,22 +1,15 @@
+[[ ! -d "$HOME/.antidote" ]] && git clone --depth=1 https://github.com/mattmc3/antidote.git "$HOME/.antidote"
 
-[[ ! -d "$HOME/.antigen" ]] && git clone https://github.com/zsh-users/antigen.git "$HOME/.antigen"
-source "$HOME/.antigen/antigen.zsh"
+source "$HOME/.antidote/antidote.zsh"
 
-# export ZSH="$HOME/.oh-my-zsh"
-# ZSH_THEME="smc"
-# source $ZSH/oh-my-zsh.sh
-# source ~/.antigen.zsh
+# loads from  ~/.zsh_plugins.txt
+antidote load
 
-
-antigen use oh-my-zsh
-
-antigen bundle git
-antigen bundle pip
-
-antigen bundle command-not-found
-antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle zsh-users/zsh-history-substring-search
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-completions
-
-antigen apply
+plugins=(
+  git
+  dotenv
+  pip
+  rust
+  ripgrep
+  docker
+)
