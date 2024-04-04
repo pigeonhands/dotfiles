@@ -13,8 +13,3 @@ copy_file ".zsh_plugins.txt"
 copy_dir ".config/zsh"
 copy_dir ".config/alacritty"
 copy_dir ".config/nvim"
-#cp -r ~/.zshrc ./.zshrc
-#cp -r ~/.zsh_plugins.txt ./.zsh_plugins.txt
-#cp -r ~/.config/zsh/* ./.config/zsh
-#cp -r ~/.config/alacritty/* ./.config/alacritty/
-#cp -r ~/.config/nvim/* ./.config/nvim/

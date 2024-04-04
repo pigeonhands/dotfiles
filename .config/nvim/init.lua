@@ -1,7 +1,2 @@
--- require("set")
--- require("opts")
--- require("lsp")
--- require("treesitter")
--- vim.cmd.colorscheme("rose-pine")
 require("config.lazy")
 vim.cmd.colorscheme("tokyonight")
