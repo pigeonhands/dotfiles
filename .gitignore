@@ -1,2 +1,3 @@
 .config/nvim/plugin
 *.zwc
+.config/zsh/plugins.zsh.zwc
