@@ -21,6 +21,8 @@ vim.g.loaded_netrwPlugin = 1
 vim.o.timeout = true
 vim.o.timeoutlen = 500
 
+vim.o.inccommand = "split"
+
 --Set completeopt to have a better completion experience
 
 -- :help completeopt
@@ -29,7 +31,7 @@ vim.o.timeoutlen = 500
 -- noselect: Do not select, force to select one from the menu
 -- shortness: avoid showing extra messages when using completion
 -- updatetime: set updatetime for CursorHold
-vim.opt.completeopt = { "menuone", "noselect", "noinsert" }
+vim.opt.completeopt = { "menuone", "noselect", "noinsert", "popup" }
 vim.opt.shortmess = vim.opt.shortmess + { c = true }
 -- vim.api.nvim_set_option('updatetime', 300)
 
@@ -37,10 +39,18 @@ vim.opt.shortmess = vim.opt.shortmess + { c = true }
 -- Show autodiagnostic popup on cursor hover_range
 -- Goto previous / next diagnostic warning / error
 -- Show inlay_hints more frequently
-vim.cmd([[
-set signcolumn=yes
-autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
-]])
+vim.opt.signcolumn = "yes"
+vim.api.nvim_create_autocmd({ "CursorHold" }, {
+	pattern = { "*" },
+	callback = function()
+		vim.diagnostic.open_float(nil, { focusable = false })
+	end,
+})
+-- old config
+-- vim.cmd([[
+-- set signcolumn=yes
+-- autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
+-- ]])
 
 --- Higighting
 -- gray
