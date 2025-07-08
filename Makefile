@@ -7,4 +7,4 @@ dotfiles:
 
 .PHONY: ansible-setup
 ansible-setup:
-	ansible-playbook -c localhost ./setup/setup.yml
+	ansible-playbook -vv -c localhost --ask-become-pass ./setup/setup.yml

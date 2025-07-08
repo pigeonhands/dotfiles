@@ -16,4 +16,4 @@ if [ ! -f "$HOME/.local/bin/ansible-playbook" ]; then
 	~/.local/bin/uvx pipx install --pip-args "github3.py" --include-deps ansible
 fi
 
-~/.local/bin/ansible-playbook -c localhost $APP_DOTFILES/setup/setup.yml
+~/.local/bin/ansible-playbook -c localhost --ask-become-pass $APP_DOTFILES/setup/setup.yml

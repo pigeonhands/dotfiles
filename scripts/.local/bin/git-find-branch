@@ -1,0 +1,4 @@
+#!/bin/env bash
+
+branch=$(git branch -a | fzf)
+echo "$branch"

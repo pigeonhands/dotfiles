@@ -3,6 +3,11 @@
   connection: local
   become: yes
   tasks:
+  - name: nvim | apt source
+    ansible.builtin.apt_repository:
+      repo: "ppa:neovim-ppa/stable"
+      state: present
+
   - name: Setup eza repo
     block:
     - name: eza |no apt key
@@ -12,7 +17,7 @@
 
     - name: eza | apt source
       ansible.builtin.apt_repository:
-        repo: "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main"
+        repo: "deb [signed-by=/etc/apt/keyrings/gierens.asc] http://deb.gierens.de stable main"
         state: present
 
     - name: Update apt cache and upgrade packages
