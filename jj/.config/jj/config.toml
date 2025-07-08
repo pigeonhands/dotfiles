@@ -1,0 +1,102 @@
+"$schema" = "https://jj-vcs.github.io/jj/latest/config-schema.json"
+
+[user]
+name = "Sam M"
+email = "git@s-mc.io"
+
+[ui]
+paginate = "auto"
+pager = ":builtin"
+default-command = "log"
+show-cryptographic-signatures = true
+
+[signing]
+behavior = "own"
+backend = "gpg"
+
+[colors]
+tags = "yellow"
+local_bookmarks = "#73a66f"
+remote_bookmarks = "red"
+
+[templates]
+log = '''
+if(root,
+    print_root_commit(self),
+    print_commit(self)
+) ++ "\n"
+'''
+
+[template-aliases]
+'print_root_commit(root)' = '''
+separate(" ",
+    format_short_change_id(root.change_id()),
+    format_short_commit_id(root.commit_id()),
+    "(" ++
+    separate(", ", 
+        label("root", "root()"),
+        root.bookmarks()
+    )
+    ++ ")"
+) ++ "\n"
+'''
+
+'commit_labels(commit)' = '''
+if(commit.git_head() || commit.bookmarks(),
+    "(" ++
+    separate(", ", 
+        if(commit.git_head(), label("git_head", "git_head()")),
+        if(commit.tags(), label("tags", "tags: " ++ separate(" ", commit.tags()))),
+        label("bookmarks", commit.bookmarks()),
+    )
+    ++ ")"
+)
+'''
+
+# label("remote_bookmarks", commit.remote_bookmarks()),
+# label("local_bookmarks", commit.local_bookmarks()),
+
+'print_commit(commit)' = '''
+separate(" ",
+    format_short_change_id_with_hidden_and_divergent_info(commit),
+    format_timestamp(commit_timestamp(commit)),
+    format_short_commit_id(commit.commit_id()),
+    commit_labels(self),
+    commit.working_copies(),
+    if(commit.conflict(), label("conflict", "conflict")),
+) ++ "\n" ++
+separate(" ",
+    "Author:",
+    format_short_signature(commit.author()),
+    if(config("ui.show-cryptographic-signatures").as_boolean(), format_short_cryptographic_signature_with_sig(commit.signature())),
+)
+++ "\n\n" ++
+separate("\n",
+    if(description,
+        description.first_line(),
+        label(if(empty, "empty"), description_placeholder),
+    ),
+    if(empty, label("empty", "(no changes)")),
+) 
+++ "\n"
+'''
+
+'format_short_cryptographic_signature_with_sig(signature)' = '''
+if(signature,
+  label("signature status", 
+    concat(
+        "[" ++ 
+            self.signature().key().substr(0, 8)
+        ++ " ",
+        label(signature.status(), 
+          coalesce(
+            if(signature.status() == "good", "✓︎"),
+            if(signature.status() == "unknown", "?"),
+            "x",
+          )
+        ),
+        "]",
+    )
+  )
+)
+'''
