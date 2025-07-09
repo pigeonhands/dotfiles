@@ -15,5 +15,5 @@ git clone git@github.com:pigeonhands/dotfiles.git ~/.app-dotfiles
 
 Apply:
 ```
-cd ~/.app-dotfiles && stow */
+cd ~/.app-dotfiles && make
 ```

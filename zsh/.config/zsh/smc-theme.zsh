@@ -55,11 +55,17 @@ function precmd() {
 
 function retcode() {}
 
+prompt_metadata="$(virtualenv_prompt_info)"
+
+if [[ $SHLVL -gt 1 ]]; then
+    prompt_metadata+="%{$fg[green]%}[%{$fg[magenta]%}$SHLVL%{$fg[green]%}]─"
+fi
+
 local user_string="%{$fg[yellow]%}%B%n%b$fg[white]@%{$fg[blue]%}%B%m%b"
 local path_string="%{$fg[white]%}%B%~%b"
 local user_and_path_string="${user_string}:${path_string}"
 local prompt_string="%(!.#.$)"
-local first_line='%{$fg[green]%}┬─$(virtualenv_prompt_info)%{$fg[green]%}[${user_and_path_string}%{$fg[green]%}]─[%{$fg[cyan]%}$(date +%X)%{$fg[green]%}]$(svc_prompts)'
+local first_line='%{$fg[green]%}┬─$prompt_metadata%{$fg[green]%}[${user_and_path_string}%{$fg[green]%}]─[%{$fg[cyan]%}$(date +%X)%{$fg[green]%}]$(svc_prompts)'
 local second_line='%{$fg[green]%}╰─>%{$fg[red]%}%1{${prompt_string}%}'
 
 
