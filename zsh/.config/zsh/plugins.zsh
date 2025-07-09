@@ -10,5 +10,5 @@ plugins=(
   dotenv
   pip
   rust
-  ripgrep
+  #ripgrep
 )
