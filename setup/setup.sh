@@ -6,6 +6,8 @@ if [ ! -d "$APP_DOTFILES" ]; then
 	git clone https://github.com/pigeonhands/dotfiles.git "$APP_DOTFILES"
 fi
 
+cd $APP_DOTFILES
+
 if [ ! -f "$HOME/.local/bin/uvx" ]; then
 	curl -LsSf https://astral.sh/uv/install.sh | sh
 fi
