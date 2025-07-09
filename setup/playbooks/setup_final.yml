@@ -1,0 +1,11 @@
+- name: set up last things
+  hosts: localhost
+  become: no
+  vars:
+    current_user: "{{ ansible_user_id }}"
+  tasks:
+    - name: change user shell to zsh 
+      become: yes
+      user:
+        name: "{{ current_user }}"
+        shell: /bin/zsh
