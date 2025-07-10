@@ -1,12 +1,36 @@
 #!/usr/bin/env bash
 
-topic=$(curl cht.sh/:list | fzf)
-[ -z "$topic" ] && exit 1
+topic=""
+query_prompt=""
 
-read -r -p "query for $topic: " query
+case "$1" in
+"all")
+	topic="~"
+	query_prompt="query"
+	;;
+"")
+	topic=$(curl cht.sh/:list | fzf)
+	[ -z "$topic" ] && exit 1
+	query_prompt="query for $topic"
+	;;
+*)
+	topic="$1"
+	query_prompt="query for $topic"
+	;;
+esac
 
-if [ -n "$query" ]; then
-	query="/$(echo "$query" | tr ' ' '+')"
+query="${@:2}"
+
+if [ -z "$query" ]; then
+	read -r -p "$query_prompt: " query
 fi
 
-curl cht.sh/$topic$query
+if [ -n "$query" ]; then
+	query="$(echo "$query" | tr ' ' '+')"
+	[ "$topic" = "~" ] || query="/$query"
+fi
+
+query_url="cht.sh/$topic$query"
+
+echo "quering $query_url"
+curl "$query_url"
