@@ -56,9 +56,18 @@ function precmd() {
 function retcode() {}
 
 prompt_metadata="$(virtualenv_prompt_info)"
+SHELL_LEVEL=$(("$SHLVL" - 1))
 
-if [[ $SHLVL -gt 1 ]]; then
-    prompt_metadata+="%{$fg[green]%}[%{$fg[magenta]%}$SHLVL%{$fg[green]%}]─"
+if [ -n "$TMUX" ]; then
+    SHELL_LEVEL=$(("$SHELL_LEVEL" - 1))
+fi
+
+if [[ "$SHELL_LEVEL" -gt 0 ]]; then
+    prompt_metadata+="%{$fg[green]%}[%{$fg[magenta]%}$SHELL_LEVEL%{$fg[green]%}]─"
+fi
+
+if [ "$SESSION_TYPE" = "remote/ssh" ]; then
+    prompt_metadata+="%{$fg[red]%}[%{$fg[black]%}SSH%{$fg[red]%}]─"
 fi
 
 local user_string="%{$fg[yellow]%}%B%n%b$fg[white]@%{$fg[blue]%}%B%m%b"

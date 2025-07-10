@@ -1,6 +1,16 @@
 autoload -U compinit && compinit
 autoload -U bashcompinit && bashcompinit
 
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+  SESSION_TYPE=remote/ssh
+else
+  case $(ps -o comm= -p "$PPID") in
+    sshd|*/sshd) SESSION_TYPE=remote/ssh;;
+  esac
+fi
+
+export SESSION_TYPE="$SESSION_TYPE"
+
 source ~/.config/zsh/plugins.zsh
 source ~/.config/zsh/smc-theme.zsh
 source ~/.config/zsh/aliases.zsh
