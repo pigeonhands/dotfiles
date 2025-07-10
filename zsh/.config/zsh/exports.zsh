@@ -1,6 +1,10 @@
 export MANPAGER='nvim +Man!'
-
 export PATH="$HOME/.local/bin:$PATH"
+
+
+if command -v nvim >/dev/null; then
+    export EDITOR="nvim"
+fi
 
 FNM_PATH="/home/sam/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
