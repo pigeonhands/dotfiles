@@ -9,7 +9,7 @@ case "$1" in
 	query_prompt="query"
 	;;
 "")
-	topic=$(curl cht.sh/:list | fzf)
+	topic=$(curl -Ss cht.sh/:list | fzf)
 	[ -z "$topic" ] && exit 1
 	query_prompt="query for $topic"
 	;;
@@ -33,4 +33,4 @@ fi
 query_url="cht.sh/$topic$query"
 
 echo "quering $query_url"
-curl "$query_url"
+curl -Ss "$query_url"
