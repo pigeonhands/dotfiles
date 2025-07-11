@@ -5,7 +5,7 @@ name = "Sam M"
 email = "git@s-mc.io"
 
 [signing]
-behavior = "own"
+behavior = "drop"
 backend = "ssh"
 key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAcvtaYueykiTr1naUH2LrQcQ/R2/U8iPDQpEwTmDCpM"
 
