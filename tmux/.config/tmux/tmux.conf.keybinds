@@ -1,0 +1,5 @@
+
+bind -r ` run-shell "tmux display-popup -E 'out=\$(~/.local/bin/cht.sh) && (echo \"\$out\" | less)' || true"
+
+# tmux-menus plugin activation
+set -g @menus_trigger 'Space'

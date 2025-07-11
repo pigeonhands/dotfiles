@@ -1,0 +1,19 @@
+
+set -g mouse on
+# set -g default-terminal "xterm-256color"
+set -g default-terminal "tmux-256color"
+set -as terminal-features 'xterm*:extkeys'
+
+# set -ga terminal-overrides ',*:Ss=\\E[%p1%d q:Se=\\E[ q'
+# set -as terminal-overrides '*:Se=\e[6 q'
+
+set -g pane-border-lines simple
+set -g pane-border-style fg=black,bright
+set -g pane-active-border-style fg=grey
+
+set -s extended-keys on
+# set -as terminal-features 'ghostty*:extkeys'
+
+set -g status-position top
+set -g xterm-keys on
+set -g allow-passthrough on
