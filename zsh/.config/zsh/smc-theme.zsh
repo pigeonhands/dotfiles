@@ -56,7 +56,7 @@ function precmd() {
 function retcode() {}
 
 prompt_metadata="$(virtualenv_prompt_info)"
-SHELL_LEVEL=$(("$SHLVL" - 1))
+SHELL_LEVEL=$(($SHLVL - 1))
 
 if [ -n "$TMUX" ]; then
     SHELL_LEVEL=$(("$SHELL_LEVEL" - 1))

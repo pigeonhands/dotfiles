@@ -3,10 +3,6 @@ autoload -U bashcompinit && bashcompinit
 
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
   SESSION_TYPE=remote/ssh
-else
-  case $(ps -o comm= -p "$PPID") in
-    sshd|*/sshd) SESSION_TYPE=remote/ssh;;
-  esac
 fi
 
 export SESSION_TYPE="$SESSION_TYPE"
@@ -24,8 +20,8 @@ source ~/.config/zsh/exports.zsh
 
 
 
-source <(zoxide init zsh)
-source <(jj util completion zsh)
+command -v zoxide >/dev/null && source <(zoxide init zsh)
+command -v jj >/dev/null && source <(jj util completion zsh)
 
 if [[ -f "~/.cargo/env" ]]; then
     source ~/.cargo/env
@@ -38,7 +34,7 @@ fi
 if command -v fzf-share >/dev/null; then
   source "$(fzf-share)/key-bindings.zsh"
   source "$(fzf-share)/completion.zsh"
-else
+elif [ -d /usr/share/doc/fzf ]; then
     source /usr/share/doc/fzf/examples/key-bindings.zsh
     source /usr/share/doc/fzf/examples/completion.zsh
 fi
