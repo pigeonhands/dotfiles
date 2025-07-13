@@ -7,11 +7,6 @@ email = "git@s-mc.io"
 [signing]
 behavior = "drop"
 backend = "ssh"
-key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAcvtaYueykiTr1naUH2LrQcQ/R2/U8iPDQpEwTmDCpM"
-
-[signing.backends.ssh]
-program = "op-ssh-sign"
-allowed-signers = "~/.config/git/allowed_signers"
 
 [git]
 sign-on-push = true
