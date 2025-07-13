@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: Install apt packages
+    ansible.builtin.import_tasks: ../tasks/install_apt_packages.yml
+    become: yes
+
+  - name: Install jj
+    ansible.builtin.import_tasks: ../tasks/install_jj.yml
+
+  - name: Apply dotfiles
+    ansible.builtin.import_tasks: ../tasks/apply_dotfiles.yml

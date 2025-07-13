@@ -1,0 +1,42 @@
+---
+- name: nvim | apt source
+  ansible.builtin.apt_repository:
+    repo: "ppa:neovim-ppa/stable"
+    state: present
+
+- name: Setup eza repo
+  block:
+  - name: eza |no apt key
+    ansible.builtin.get_url:
+      url: https://raw.githubusercontent.com/eza-community/eza/main/deb.asc
+      dest: /etc/apt/keyrings/gierens.asc
+
+  - name: eza | apt source
+    ansible.builtin.apt_repository:
+      repo: "deb [signed-by=/etc/apt/keyrings/gierens.asc] http://deb.gierens.de stable main"
+      state: present
+
+  - name: Update apt cache and upgrade packages
+    apt:
+      update_cache: yes
+      upgrade: dist
+
+  - name: Install essential packages
+    apt:
+      name:
+        - git
+        - curl
+        - wget
+        - build-essential
+        - neovim
+        - stow
+        - tmux
+        - zsh
+        - fzf
+        - jq
+        - eza
+        - fd-find
+        - ripgrep
+        - bat
+      state: present
+

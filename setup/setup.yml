@@ -1,5 +1,4 @@
 ---
-- import_playbook: ./playbooks/setup_apt_packages.yml
-- import_playbook: ./playbooks/setup_other_packages.yml
+- import_playbook: ./playbooks/setup_packages.yml
 - import_playbook: ./playbooks/setup_dotfiles.yml
 - import_playbook: ./playbooks/setup_final.yml

@@ -1,18 +1,6 @@
 ---
 - hosts: localhost
   connection: local
-  become: no
   tasks:
-
-  - name: Set facts
-    ansible.builtin.set_fact:
-      makefile_path: "{{ playbook_dir | dirname | dirname }}"
-
-  - name: dbg
-    debug:
-      var: makefile_path
-
-  - name: make dotfiles
-    community.general.make:
-      chdir: "{{ makefile_path }}"
-      target: dotfiles
+  - name: Apply dotfiles
+    ansible.builtin.import_tasks: ../tasks/apply_dotfiles.yml
