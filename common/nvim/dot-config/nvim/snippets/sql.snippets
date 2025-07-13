@@ -1,0 +1,4 @@
+snippet csv
+	COPY ( 
+    ${1:<query>} 
+    ) TO STDOUT WITH (csv headers)
