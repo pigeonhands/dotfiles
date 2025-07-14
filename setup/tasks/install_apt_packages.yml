@@ -28,8 +28,6 @@
         - curl
         - wget
         - build-essential
-        - neovim
-        - stow
         - tmux
         - zsh
         - fzf
