@@ -13,7 +13,7 @@ grep=""
 dry_run="0"
 force="0"
 
-SPECIAL_DOTFILES="fold"
+SPECIAL_DOTFILES="fold|root"
 
 while [[ $# -gt 0 ]]; do
 	echo "ARG: \"$1\""
@@ -74,7 +74,7 @@ get_targets() {
 	local targets="$(command find $root_dir -mindepth 1 -maxdepth 1 -type d)"
 
 	for t in $targets; do
-		if basename "$t" | command grep -vq "$grep"; then
+		if basename "$t" | command grep -E -vq "$grep"; then
 			log "grep filtered out $t" "err"
 		else
 			echo "$t"
@@ -85,7 +85,7 @@ get_targets() {
 apply_symlink() {
 	local symlink_target="$1"
 
-	if basename "$symlink_target" | command grep -q "^\.\($SPECIAL_DOTFILES\)\$"; then
+	if basename "$symlink_target" | command grep -E -q "^\.($SPECIAL_DOTFILES)\$"; then
 		log "(not symlinking $(basename $symlink_target))"
 		return
 	fi
@@ -189,6 +189,11 @@ symlink_dir() {
 
 	local dest="$(destination_path $target $base_dir)"
 
+	if [[ -f "$base_dir/.root" ]]; then
+		sync_dotfiles "$target" "$base_dir"
+		return
+	fi
+
 	symlink_content "$target" "$base_dir" "f"
 
 	for target_subdir in $(command find $target -mindepth 1 -maxdepth 1 -type d); do
@@ -212,9 +217,9 @@ sync_dotfiles() {
 		for t in $targets; do
 			echo ""
 			log "Applying $t"
-			log_tab_index="1"
+			log_tab_index=$((log_tab_index + "1"))
 			symlink_dir "$t"
-			log_tab_index="0"
+			log_tab_index=$((log_tab_index - "1"))
 		done
 	fi
 }

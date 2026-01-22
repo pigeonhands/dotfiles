@@ -15,5 +15,12 @@ git clone git@github.com:pigeonhands/dotfiles.git ~/.app-dotfiles
 
 Apply:
 ```
-cd ~/.app-dotfiles && make
+cd ~/.app-dotfiles && stow */
 ```
+
+
+## special files
+| name | action|
+|-----|------|
+| .fold |  Symlink each item in directory (do not reccursively symlink files in sub-dirs) |
+| .root |  Treat dir as if it was a root dotfiles dir |
