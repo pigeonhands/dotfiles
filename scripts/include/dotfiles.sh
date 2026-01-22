@@ -10,7 +10,7 @@ cd "$script_dir"
 cd ..
 
 grep=""
-dry_run="0"
+dry_run="1"
 force="0"
 
 SPECIAL_DOTFILES="fold|root"
@@ -18,6 +18,9 @@ SPECIAL_DOTFILES="fold|root"
 while [[ $# -gt 0 ]]; do
 	echo "ARG: \"$1\""
 	case "$1" in
+	"--apply")
+		dry_run="0"
+		;;
 	"--dry")
 		dry_run="1"
 		;;
@@ -41,7 +44,7 @@ log() {
 
 	if [[ "$2" == "err" ]]; then
 		if [[ $dry_run == "1" ]]; then
-			echo -e "[DRY_RUN]:$prefix$1" >&2
+			echo -e "[DRY_RUN]:$prefix $1" >&2
 		else
 			echo -e "$prefix$1" >&2
 		fi
@@ -74,7 +77,9 @@ get_targets() {
 	local targets="$(command find $root_dir -mindepth 1 -maxdepth 1 -type d)"
 
 	for t in $targets; do
-		if basename "$t" | command grep -E -vq "$grep"; then
+		if [[ -f "$t/.root" ]]; then
+			echo "$t"
+		elif basename "$t" | command grep -E -vq "$grep"; then
 			log "grep filtered out $t" "err"
 		else
 			echo "$t"
@@ -190,7 +195,7 @@ symlink_dir() {
 	local dest="$(destination_path $target $base_dir)"
 
 	if [[ -f "$base_dir/.root" ]]; then
-		sync_dotfiles "$target" "$base_dir"
+		sync_targets "$target" "$base_dir"
 		return
 	fi
 
@@ -207,7 +212,7 @@ symlink_dir() {
 	done
 }
 
-sync_dotfiles() {
+sync_targets() {
 	local base_dir="$1"
 	local targets="$(get_targets $base_dir)"
 
@@ -222,4 +227,18 @@ sync_dotfiles() {
 			log_tab_index=$((log_tab_index - "1"))
 		done
 	fi
+}
+
+sync_dotfiles() {
+
+	echo ""
+	echo "## applying '$1'"
+	sync_targets "$1" "$2"
+
+	if [[ $dry_run == "1" ]]; then
+		log "run with --apply to do a non dry-run"
+	fi
+
+	echo "## done '$1'"
+	echo ""
 }

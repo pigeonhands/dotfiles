@@ -1,12 +1,13 @@
 opts ?=
+grep ?=
 
 .PHONY: dotfiles
 dotfiles: 
-	@./scripts/setup.sh $(opts)
+	@./scripts/setup.sh $(opts) '$(grep)'
 
 .PHONY: dotfiles-test
-dotfiles-test: 
-	@./scripts/setup.sh --dry $(opts)
+apply: 
+	@./scripts/setup.sh --apply $(opts) '$(grep)'
 
 .PHONY: ansible-setup
 ansible-setup:
