@@ -4,12 +4,16 @@ if wezterm.config_builder then
     config = wezterm.config_builder()
 end
 
-config.enable_tab_bar = false;
--- config.hide_tab_bar_if_only_one_tab = true
--- config.tab_bar_at_bottom = true
 
-config.window_decorations = 'NONE'
-config.window_background_opacity = 0.9
+if wezterm.target_triple == "x86_64-pc-windows-msvc" then
+	config.default_prog = { "C:\\Program Files\\PowerShell\\7\\pwsh.exe" }
+else
+	config.enable_tab_bar = false
+	-- config.hide_tab_bar_if_only_one_tab = true
+	-- config.tab_bar_at_bottom = true
+
+	config.window_decorations = "NONE"
+end
 
 --config.color_scheme = 'Catppuccin Mocha'
 config.color_scheme = 'Tokyo Night'
