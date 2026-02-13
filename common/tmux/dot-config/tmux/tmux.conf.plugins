@@ -2,17 +2,20 @@ run-shell "[ -d ~/.tmux/plugins/tpm ] || git clone https://github.com/tmux-plugi
 
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'omerxx/tmux-sessionx'
-set -g @plugin 'omerxx/tmux-floax'
-# set -g @plugin 'alexwforsythe/tmux-which-key'
-set -g @plugin 'sainnhe/tmux-fzf'
-set -g @plugin 'catppuccin/tmux'
-set -g @plugin 'jaclu/tmux-menus'
-set -g @plugin 'tmux-plugins/tmux-sidebar'
-set -g @plugin 'tmux-plugins/tmux-cpu'
+set -g @plugin 'omerxx/tmux-sessionx' # <prefix> + O
+set -g @plugin 'omerxx/tmux-floax' # <prefix> + p
+set -g @plugin 'Morantron/tmux-fingers'  # <prefix> + F
+set -g @plugin 'jaclu/tmux-menus' # <prefix> + space
+set -g @plugin 'tmux-plugins/tmux-copycat' # <prefix> + Ctrl-u / <leader>  + CTRL-f
+# set -g @plugin 'laktak/extrakto' # <prefix> + tab. (tab insert, enter copy to clipboard, Ctrl-f custom folter)
+
 set -g @plugin 'tmux-plugins/tmux-yank'
-set -g @plugin 'tmux-plugins/tmux-copycat'
-set -g @plugin 'tmux-plugins/tmux-open'
+# set -g @plugin 'alexwforsythe/tmux-which-key'
+# set -g @plugin 'sainnhe/tmux-fzf'
+set -g @plugin 'catppuccin/tmux'
+# set -g @plugin 'tmux-plugins/tmux-sidebar' # <prefix> + tab
+set -g @plugin 'tmux-plugins/tmux-cpu'
+# set -g @plugin 'tmux-plugins/tmux-open'
 
 # Other examples:
 # set -g @plugin 'github_username/plugin_name'
