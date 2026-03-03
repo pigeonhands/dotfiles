@@ -92,7 +92,7 @@ if(signature,
     concat(
         "[" ++ 
             if(signature.key(),
-                signature.key().substr(0, 8),
+                signature.key().substr(0, 15),
                 "ssh sig",
             )
         ++ " ",
