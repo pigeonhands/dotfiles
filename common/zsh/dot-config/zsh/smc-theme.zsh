@@ -43,14 +43,14 @@ function preexec() {
 }
 
 function precmd() {
-	if [ $timer ]; then
-		timer_show=$(($SECONDS - $timer))
-		# export RPROMPT=$'%{\e[35m%}${timer_show}s%{$reset_color%}'
-		export RPROMPT=$'%(?:%{\e[35m%}${timer_show}s:%{$fg[red]%}${timer_show}s)%{$reset_color%}'
-		unset timer
-	else
-		export RPROMPT=""
-	fi
+# 	if [ $timer ]; then
+# 		timer_show=$(($SECONDS - $timer))
+# 		# export RPROMPT=$'%{\e[35m%}${timer_show}s%{$reset_color%}'
+# 		export RPROMPT=$'%(?:%{\e[35m%}${timer_show}s:%{$fg[red]%}${timer_show}s)%{$reset_color%}'
+# 		unset timer
+# 	else
+# 		export RPROMPT=""
+# 	fi
 }
 
 function retcode() {}
