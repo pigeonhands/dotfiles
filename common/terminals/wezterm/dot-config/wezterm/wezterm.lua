@@ -1,9 +1,8 @@
 local wezterm = require("wezterm")
 local config = {}
 if wezterm.config_builder then
-    config = wezterm.config_builder()
+	config = wezterm.config_builder()
 end
-
 
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	config.default_prog = { "C:\\Program Files\\PowerShell\\7\\pwsh.exe" }
@@ -16,13 +15,19 @@ else
 end
 
 --config.color_scheme = 'Catppuccin Mocha'
-config.color_scheme = 'Tokyo Night'
+config.color_scheme = "Tokyo Night"
 
-
-config.font = wezterm.font('JetBrainsMono NF')
+config.font = wezterm.font("JetBrainsMono NF")
 -- config.font_size = 14.0
 
-config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
+config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
+-- config.keys = {
+-- 	{
+-- 		key = "V",
+-- 		mods = "CTRL|SHIFT",
+-- 		action = wezterm.action.PasteFrom("Clipboard"),
+-- 	},
+-- }
 
 -- config.keys = {
 --   { key = '|', mods = 'LEADER', action = wezterm.action.SplitHorizontal{ domain = 'CurrentPaneDomain' } },
