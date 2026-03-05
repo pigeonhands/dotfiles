@@ -47,10 +47,10 @@ separate(" ",
 '''
 
 'commit_labels(commit)' = '''
-if(commit.git_head() || commit.bookmarks(),
+if(commit.contained_in('first_parent(@)') || commit.bookmarks(),
     "(" ++
     separate(", ", 
-        if(commit.git_head(), label("git_head", "git_head()")),
+        if(commit.contained_in('first_parent(@)'), label("git_head", "git_head()")),
         if(commit.tags(), label("tags", "tags: " ++ separate(" ", commit.tags()))),
         label("bookmarks", commit.bookmarks()),
     )
@@ -63,7 +63,7 @@ if(commit.git_head() || commit.bookmarks(),
 
 'print_commit(commit)' = '''
 separate(" ",
-    format_short_change_id_with_hidden_and_divergent_info(commit),
+    format_short_change_id(commit.change_id()),
     format_timestamp(commit_timestamp(commit)),
     format_short_commit_id(commit.commit_id()),
     commit_labels(self),
