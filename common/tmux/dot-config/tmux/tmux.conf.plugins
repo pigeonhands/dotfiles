@@ -12,7 +12,7 @@ set -g @plugin 'tmux-plugins/tmux-copycat' # <prefix> + Ctrl-u / <leader>  + CTR
 set -g @plugin 'tmux-plugins/tmux-yank'
 # set -g @plugin 'alexwforsythe/tmux-which-key'
 # set -g @plugin 'sainnhe/tmux-fzf'
-set -g @plugin 'catppuccin/tmux'
+
 # set -g @plugin 'tmux-plugins/tmux-sidebar' # <prefix> + tab
 set -g @plugin 'tmux-plugins/tmux-cpu'
 # set -g @plugin 'tmux-plugins/tmux-open'

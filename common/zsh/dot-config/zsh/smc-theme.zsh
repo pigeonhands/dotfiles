@@ -13,17 +13,19 @@ ZSH_THEME_GIT_PROMPT_SHA_BEFORE=" %{$fg[blue]%}"
 ZSH_THEME_GIT_PROMPT_SHA_AFTER="%{$reset_color%}"
 
 function myjj() {
-    jj_ref="$(jj log -r @ \
-        --template '
-    separate(" ",
-        label("bookmarks", if(self.bookmarks(), separate(" ", self.bookmarks()))),
-        format_short_change_id(self.change_id()),
-    )
-    ' --no-graph --color=always \
-    2&>/dev/null
-    )" || return
+    if command -v jj >/dev/null; then
+	    jj_ref="$(jj log -r @ \
+		--template '
+	    separate(" ",
+		label("bookmarks", if(self.bookmarks(), separate(" ", self.bookmarks()))),
+		format_short_change_id(self.change_id()),
+	    )
+	    ' --no-graph --color=always \
+	    2&>/dev/null
+	    )" || return
 
-    echo "─$fg[green]%B[%{$reset_color%}$fg[purple]%B$jj_ref%{$reset_color%}%b%B$fg[green]]%b"
+	    echo "─$fg[green]%B[%{$reset_color%}$fg[purple]%B$jj_ref%{$reset_color%}%b%B$fg[green]]%b"
+    fi
 }
 
 function mygit() {
