@@ -1,1 +1,4 @@
 source "$HOME/.config/zsh/init.zsh"
+
+# Added by Claude Code installer
+export PATH="$HOME/.local/bin:$PATH"

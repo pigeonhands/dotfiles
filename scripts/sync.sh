@@ -1,5 +1,5 @@
 # run with ./setup.sh sync
 
 sync_dotfiles "common"
-hostname="$(cat /etc/hostname)"
+hostname="$(hostname -s)"
 [[ -d "$hostname" ]] && sync_dotfiles "$hostname" || true

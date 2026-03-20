@@ -36,6 +36,17 @@ done
 
 log_tab_index="0"
 
+_realpath() {
+	local path="$1"
+	if command -v realpath > /dev/null 2>&1; then
+		realpath "$path"
+	elif [[ -d "$path" ]]; then
+		(cd "$path" && pwd)
+	else
+		echo "$(cd "$(dirname "$path")" && pwd)/$(basename "$path")"
+	fi
+}
+
 log() {
 	prefix=""
 	for ((i = 0; i < log_tab_index; i++)); do
@@ -98,7 +109,7 @@ apply_symlink() {
 	local dest="$(echo $2 | sed 's/dot-/\./')"
 	local sym_out=" $dest -> $symlink_target"
 
-	local full_src="$(realpath $symlink_target)"
+	local full_src="$(_realpath $symlink_target)"
 
 	if [[ -L "$dest" ]]; then
 		existing_symlink="$(readlink $dest)"
@@ -222,9 +233,9 @@ sync_targets() {
 		for t in $targets; do
 			echo ""
 			log "Applying $t"
-			log_tab_index=$((log_tab_index + "1"))
+			log_tab_index=$((log_tab_index + 1))
 			symlink_dir "$t"
-			log_tab_index=$((log_tab_index - "1"))
+			log_tab_index=$((log_tab_index - 1))
 		done
 	fi
 }
