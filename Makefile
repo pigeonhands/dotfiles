@@ -1,5 +1,7 @@
 opts ?=
 grep ?=
+DOTFILES_CACHE ?= .dotfiles-cache
+AGE_RECIPIENTS_FILE ?= .age-recipients
 
 .PHONY: dry
 dry:
@@ -8,3 +10,17 @@ dry:
 .PHONY: apply
 apply:
 	@./scripts/setup.sh --apply $(opts) '$(grep)'
+
+.PHONY: encrypt
+encrypt:
+	@DOTFILES_CACHE=$(DOTFILES_CACHE) AGE_RECIPIENTS_FILE=$(AGE_RECIPIENTS_FILE) ./scripts/age.sh encrypt
+
+.PHONY: add-secret
+add-secret:
+	@[ -n "$(in)" ] || (echo "usage: make add-secret in=<file> out=<dotfiles-path>"; exit 1)
+	@[ -n "$(out)" ] || (echo "usage: make add-secret in=<file> out=<dotfiles-path>"; exit 1)
+	@DOTFILES_CACHE=$(DOTFILES_CACHE) AGE_RECIPIENTS_FILE=$(AGE_RECIPIENTS_FILE) ./scripts/age.sh add-secret "$(in)" "$(out)"
+
+.PHONY: watch
+watch:
+	@DOTFILES_CACHE=$(DOTFILES_CACHE) AGE_RECIPIENTS_FILE=$(AGE_RECIPIENTS_FILE) ./scripts/age.sh watch

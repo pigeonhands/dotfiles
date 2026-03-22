@@ -6,6 +6,10 @@ fi
 DOTFILES_DRY_RUN="${DOTFILES_DRY_RUN:-1}"
 DOTFILES_FORCE="${DOTFILES_FORCE:-0}"
 DOTFILES_FILTER="${DOTFILES_FILTER:-}"
+DOTFILES_CACHE_DIR="${DOTFILES_CACHE_DIR:-$PWD/.dotfiles-cache}"
+
+AGE_KEY_FILE="${AGE_KEY_FILE:-$HOME/.age/key.txt}"
+AGE_RECIPIENTS_FILE="${AGE_RECIPIENTS_FILE:-$PWD/.age-recipients}"
 
 SPECIAL_DOTFILES="fold|root"
 log_tab_index="0"
@@ -46,12 +50,13 @@ _sync_targets_filtered() {
 
 _realpath() {
 	local path="$1"
-	if command -v realpath > /dev/null 2>&1; then
-		realpath "$path"
+	[[ "$path" = /* ]] && echo "$path" && return
+	if command -v realpath >/dev/null 2>&1; then
+		realpath "$path" 2>/dev/null || echo "$PWD/$path"
 	elif [[ -d "$path" ]]; then
 		(cd "$path" && pwd)
 	else
-		echo "$(cd "$(dirname "$path")" && pwd)/$(basename "$path")"
+		echo "$(cd "$(dirname "$path")" 2>/dev/null && pwd || echo "$PWD/$(dirname "$path")")/$(basename "$path")"
 	fi
 }
 
@@ -157,13 +162,29 @@ destination_path() {
 	echo "$(echo $dest | sed 's/dot-/\./')"
 }
 
+_decrypt_to_cache() {
+	local source="$1"
+	local cached="$DOTFILES_CACHE_DIR/${source%.age}"
+
+	log "Decrypting ${_c_path}$source${_c_reset}"
+	_run mkdir -p "$(dirname "$cached")"
+	_run age --decrypt -i "$AGE_KEY_FILE" -o "$cached" "$source"
+
+	echo "$cached"
+}
+
 symlink_item() {
 	source_file="$1"
 	base_dir="$2"
 
-	local dest="$(destination_path $source_file $base_dir)"
-
-	apply_symlink "$source_file" "$dest"
+	if [[ "$source_file" == *.age ]]; then
+		local cached="$(_decrypt_to_cache "$source_file")"
+		local dest="$(destination_path "${source_file%.age}" "$base_dir")"
+		apply_symlink "$cached" "$dest"
+	else
+		local dest="$(destination_path "$source_file" "$base_dir")"
+		apply_symlink "$source_file" "$dest"
+	fi
 }
 
 remove_intermediate_symlink() {
