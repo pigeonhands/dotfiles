@@ -2,38 +2,12 @@ if [[ -z "$DOTFILE_HOME" ]]; then
 	echo "DOTFILE_HOME must be set" >&2
 	exit 1
 fi
-echo "DOTFILE_HOME: $DOTFILE_HOME"
 
-script_dir="$(dirname "$0")"
-echo "script dir: $script_dir"
-cd "$script_dir"
-cd ..
-
-grep=""
-dry_run="1"
-force="0"
+DOTFILES_DRY_RUN="${DOTFILES_DRY_RUN:-1}"
+DOTFILES_FORCE="${DOTFILES_FORCE:-0}"
+DOTFILES_FILTER="${DOTFILES_FILTER:-}"
 
 SPECIAL_DOTFILES="fold|root"
-
-while [[ $# -gt 0 ]]; do
-	echo "ARG: \"$1\""
-	case "$1" in
-	"--apply")
-		dry_run="0"
-		;;
-	"--dry")
-		dry_run="1"
-		;;
-	"--force")
-		force="1"
-		;;
-	*)
-		grep="$1"
-		;;
-	esac
-	shift
-done
-
 log_tab_index="0"
 
 _realpath() {
@@ -54,13 +28,13 @@ log() {
 	done
 
 	if [[ "$2" == "err" ]]; then
-		if [[ $dry_run == "1" ]]; then
+		if [[ $DOTFILES_DRY_RUN == "1" ]]; then
 			echo -e "[DRY_RUN]:$prefix $1" >&2
 		else
 			echo -e "$prefix$1" >&2
 		fi
 	else
-		if [[ $dry_run == "1" ]]; then
+		if [[ $DOTFILES_DRY_RUN == "1" ]]; then
 			echo -e "[DRY_RUN]:$prefix $1"
 		else
 			echo -e "$prefix$1"
@@ -76,7 +50,7 @@ remove_item() {
 
 	log "$message"
 
-	if [[ $dry_run == "0" ]]; then
+	if [[ $DOTFILES_DRY_RUN == "0" ]]; then
 
 		rm $flags "$path"
 	fi
@@ -90,7 +64,7 @@ get_targets() {
 	for t in $targets; do
 		if [[ -f "$t/.root" ]]; then
 			echo "$t"
-		elif basename "$t" | command grep -E -vq "$grep"; then
+		elif basename "$t" | command grep -E -vq "$DOTFILES_FILTER"; then
 			log "grep filtered out $t" "err"
 		else
 			echo "$t"
@@ -116,7 +90,7 @@ apply_symlink() {
 		if [[ "$existing_symlink" == "$full_src" ]]; then
 			log "no change for $sym_out"
 			return
-		elif [[ "$force" == "1" ]]; then
+		elif [[ "$DOTFILES_FORCE" == "1" ]]; then
 			remove_item "$dest" "Deleting existing symlink at $dest"
 		else
 			log "(skip - no force) There is an existing symlink at $dest"
@@ -125,7 +99,7 @@ apply_symlink() {
 	fi
 
 	if [[ -f "$dest" ]]; then
-		if [[ "$force" == "1" ]]; then
+		if [[ "$DOTFILES_FORCE" == "1" ]]; then
 			remove_item "$dest" "Deleting existing file at $dest"
 		else
 			log "(skip - no force) There is an existing file at $dest"
@@ -134,7 +108,7 @@ apply_symlink() {
 	fi
 
 	if [[ -d "$dest" ]]; then
-		if [[ "$force" == "1" ]]; then
+		if [[ "$DOTFILES_FORCE" == "1" ]]; then
 			remove_item "$dest" "Deleting existing directory at $dest" "-r"
 		else
 			log "(skip - no force) There is an existing directory at $dest"
@@ -144,7 +118,7 @@ apply_symlink() {
 
 	log "Symlinking $sym_out"
 
-	if [[ $dry_run == "0" ]]; then
+	if [[ $DOTFILES_DRY_RUN == "0" ]]; then
 		mkdir -p "$(dirname $dest)"
 		ln -s "$full_src" "$dest"
 	fi
@@ -177,7 +151,7 @@ remove_intermediate_symlink() {
 
 	if [[ -L "$dest" ]]; then
 		existing_symlink="$(readlink $dest)"
-		if [[ "$force" == "1" ]]; then
+		if [[ "$DOTFILES_FORCE" == "1" ]]; then
 			remove_item "$dest" "Deleting intermediate symlink at $dest"
 		else
 			log "(skip - no force) There is an intermediate symlink at $dest"
@@ -227,8 +201,6 @@ sync_targets() {
 	local base_dir="$1"
 	local targets="$(get_targets $base_dir)"
 
-	# [[ -n "$targets" ]] && echo "$targets" | xargs -n1 echo "Will apply:"
-
 	if [[ -n "$targets" ]]; then
 		for t in $targets; do
 			echo ""
@@ -246,7 +218,7 @@ sync_dotfiles() {
 	echo "## applying '$1'"
 	sync_targets "$1" "$2"
 
-	if [[ $dry_run == "1" ]]; then
+	if [[ $DOTFILES_DRY_RUN == "1" ]]; then
 		log "run with --apply to do a non dry-run"
 	fi
 

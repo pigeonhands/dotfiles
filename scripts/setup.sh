@@ -3,18 +3,34 @@
 DOTFILE_HOME="$HOME"
 
 scripts=$(dirname "$0")
+
+DOTFILES_FILTER=""
+DOTFILES_DRY_RUN="1"
+DOTFILES_FORCE="0"
+
+while [[ $# -gt 0 ]]; do
+	echo "ARG: \"$1\""
+	case "$1" in
+	"--apply")
+		DOTFILES_DRY_RUN="0"
+		;;
+	"--dry")
+		DOTFILES_DRY_RUN="1"
+		;;
+	"--force")
+		DOTFILES_FORCE="1"
+		;;
+	*)
+		DOTFILES_FILTER="$1"
+		;;
+	esac
+	shift
+done
+
 source "$scripts/include/dotfiles.sh"
 
-command="${1:-sync}"
+cd "$scripts/.."
 
 log "Working from $(pwd)"
 
-case "$command" in
-"sync")
-	. "$scripts/sync.sh"
-	;;
-*)
-	echo "Unknown command $command"
-	exit 1
-	;;
-esac
+. "$scripts/sync.sh"

@@ -1,21 +1,21 @@
 ## app dotfiles
 
-for dotfiles outside of nixos-dotfiles
+for application dotfiles
 
-
-script:
-```
-curl -sSf https://raw.githubusercontent.com/pigeonhands/dotfiles/refs/heads/master/setup/setup.sh | sh
-```
 
 Clone:
 ```
-git clone git@github.com:pigeonhands/dotfiles.git ~/.app-dotfiles
+git clone git@github.com:pigeonhands/dotfiles.git ~/.dotfiles
 ```
 
 Apply:
 ```
-cd ~/.app-dotfiles && stow */
+cd ~/.dotfiles && make apply
+```
+
+Only apply some configurations (grep):
+```
+make grep=zsh
 ```
 
 
