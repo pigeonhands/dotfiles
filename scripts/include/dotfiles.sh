@@ -10,6 +10,15 @@ DOTFILES_FILTER="${DOTFILES_FILTER:-}"
 SPECIAL_DOTFILES="fold|root"
 log_tab_index="0"
 
+_c_reset="\033[0m"
+_c_bold="\033[1m"
+_c_dim="\033[2m"
+_c_yellow="\033[33m"
+_c_cyan="\033[36m"
+_c_green="\033[32m"
+_c_red="\033[31m"
+_c_blue="\033[34m"
+
 _realpath() {
 	local path="$1"
 	if command -v realpath > /dev/null 2>&1; then
@@ -27,18 +36,13 @@ log() {
 		prefix+="\t"
 	done
 
+	local dry_prefix=""
+	[[ $DOTFILES_DRY_RUN == "1" ]] && dry_prefix="${_c_yellow}[DRY_RUN]${_c_reset}:"
+
 	if [[ "$2" == "err" ]]; then
-		if [[ $DOTFILES_DRY_RUN == "1" ]]; then
-			echo -e "[DRY_RUN]:$prefix $1" >&2
-		else
-			echo -e "$prefix$1" >&2
-		fi
+		echo -e "${_c_dim}${dry_prefix}$prefix $1${_c_reset}" >&2
 	else
-		if [[ $DOTFILES_DRY_RUN == "1" ]]; then
-			echo -e "[DRY_RUN]:$prefix $1"
-		else
-			echo -e "$prefix$1"
-		fi
+		echo -e "${dry_prefix}$prefix $1"
 	fi
 
 }
@@ -91,7 +95,7 @@ apply_symlink() {
 			log "no change for $sym_out"
 			return
 		elif [[ "$DOTFILES_FORCE" == "1" ]]; then
-			remove_item "$dest" "Deleting existing symlink at $dest"
+			remove_item "$dest" "${_c_red}Deleting${_c_reset} existing symlink at $dest"
 		else
 			log "(skip - no force) There is an existing symlink at $dest"
 			return
@@ -100,7 +104,7 @@ apply_symlink() {
 
 	if [[ -f "$dest" ]]; then
 		if [[ "$DOTFILES_FORCE" == "1" ]]; then
-			remove_item "$dest" "Deleting existing file at $dest"
+			remove_item "$dest" "${_c_red}Deleting${_c_reset} existing file at $dest"
 		else
 			log "(skip - no force) There is an existing file at $dest"
 			return
@@ -109,14 +113,14 @@ apply_symlink() {
 
 	if [[ -d "$dest" ]]; then
 		if [[ "$DOTFILES_FORCE" == "1" ]]; then
-			remove_item "$dest" "Deleting existing directory at $dest" "-r"
+			remove_item "$dest" "${_c_red}Deleting${_c_reset} existing directory at $dest" "-r"
 		else
 			log "(skip - no force) There is an existing directory at $dest"
 			return
 		fi
 	fi
 
-	log "Symlinking $sym_out"
+	log "${_c_green}Symlinking${_c_reset}$sym_out"
 
 	if [[ $DOTFILES_DRY_RUN == "0" ]]; then
 		mkdir -p "$(dirname $dest)"
@@ -152,7 +156,7 @@ remove_intermediate_symlink() {
 	if [[ -L "$dest" ]]; then
 		existing_symlink="$(readlink $dest)"
 		if [[ "$DOTFILES_FORCE" == "1" ]]; then
-			remove_item "$dest" "Deleting intermediate symlink at $dest"
+			remove_item "$dest" "${_c_red}Deleting${_c_reset} intermediate symlink at $dest"
 		else
 			log "(skip - no force) There is an intermediate symlink at $dest"
 			return 1
@@ -209,7 +213,7 @@ sync_targets() {
 	if [[ -n "$targets" ]]; then
 		for t in $targets; do
 			echo ""
-			log "Applying $t"
+			log "${_c_cyan}${_c_bold}Applying${_c_reset} $t"
 			log_tab_index=$((log_tab_index + 1))
 			symlink_dir "$t"
 			log_tab_index=$((log_tab_index - 1))
@@ -224,14 +228,14 @@ sync_dotfiles() {
 	fi
 
 	echo ""
-	echo "## applying '$1'"
+	echo -e "${_c_blue}${_c_bold}## applying '$1'${_c_reset}"
 	sync_targets "$1" "$2"
 
 	if [[ $DOTFILES_DRY_RUN == "1" ]]; then
-		log "run with --apply to do a non dry-run"
+		log "${_c_yellow}run with --apply to do a non dry-run${_c_reset}"
 	fi
 
-	echo "## done '$1'"
+	echo -e "${_c_blue}${_c_bold}## done '$1'${_c_reset}"
 	echo ""
 	DOTFILES_FILTER="$saved_filter"
 }
