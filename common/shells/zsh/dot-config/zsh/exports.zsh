@@ -1,6 +1,13 @@
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 
+# Homebrew (macOS) — must come before /bin so newer bash is picked up
+if [ -d "/opt/homebrew/bin" ]; then
+    export PATH="/opt/homebrew/bin:$PATH"
+elif [ -d "/usr/local/homebrew/bin" ]; then
+    export PATH="/usr/local/homebrew/bin:$PATH"
+fi
+
 
 if command -v nvim >/dev/null; then
     export EDITOR="nvim"
