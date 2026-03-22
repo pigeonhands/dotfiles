@@ -18,6 +18,24 @@ Only apply some configurations (grep):
 make grep=zsh
 ```
 
+## commands
+
+| command | description |
+|---------|-------------|
+| `make` | dry run — preview what would be applied |
+| `make apply` | apply all dotfiles |
+| `make apply grep=zsh` | apply only matching targets |
+| `make apply opts=--force` | overwrite existing files |
+| `make status` | show symlink status for all managed files |
+| `make check` | show only problems (missing, wrong target, not a symlink) |
+| `make list` | list all managed source → destination mappings |
+| `make diff` | diff destinations that diverge from their source |
+| `make backup` | dry run backup of existing destinations |
+| `make backup opts=--apply` | actually backup existing destinations |
+| `make new-machine` | scaffold `machines/<hostname>/` directory |
+
+All commands support `grep=` filtering, e.g. `make status grep=zsh`.
+
 ## special files
 | name | action|
 |-----|------|
