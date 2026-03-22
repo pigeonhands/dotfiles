@@ -1,4 +1,6 @@
-# python venv, user, host, full path and branch on two lines for easier vgrepping
+autoload -U colors && colors
+setopt PROMPT_SUBST
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 ZSH_THEME_VIRTUALENV_PREFIX="(%{$fg[magenta]%}"
 ZSH_THEME_VIRTUALENV_SUFFIX="%{$fg[blue]%})"
@@ -11,6 +13,60 @@ ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[magenta]%} ✂"
 ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[blue]%} ✈"
 ZSH_THEME_GIT_PROMPT_SHA_BEFORE=" %{$fg[blue]%}"
 ZSH_THEME_GIT_PROMPT_SHA_AFTER="%{$reset_color%}"
+
+function virtualenv_prompt_info() {
+  [[ -n ${VIRTUAL_ENV} ]] || return
+  echo "${ZSH_THEME_VIRTUALENV_PREFIX=[}${VIRTUAL_ENV_PROMPT:-${VIRTUAL_ENV:t:gs/%/%%}}${ZSH_THEME_VIRTUALENV_SUFFIX=]}"
+}
+
+function git_prompt_short_sha() {
+  local SHA
+  SHA=$(git rev-parse --short HEAD 2>/dev/null) && echo "$ZSH_THEME_GIT_PROMPT_SHA_BEFORE$SHA$ZSH_THEME_GIT_PROMPT_SHA_AFTER"
+}
+
+function git_prompt_status() {
+  local status_text
+  status_text="$(git status --porcelain -b 2>/dev/null)" || return 1
+
+  local -A statuses_seen
+  git rev-parse --verify refs/stash &>/dev/null && statuses_seen[STASHED]=1
+
+  local status_lines=("${(@f)${status_text}}")
+  if [[ "$status_lines[1]" =~ "^## [^ ]+ \[(.*)\]" ]]; then
+    local branch_statuses=("${(@s/,/)match}")
+    for branch_status in $branch_statuses; do
+      [[ $branch_status =~ "(behind|diverged|ahead) ([0-9]+)?" ]] || continue
+      statuses_seen[$match[1]]=1
+    done
+  fi
+
+  local -A prefix_map=(
+    '\?\? ' UNTRACKED  'A  ' ADDED    'M  ' MODIFIED  'MM ' MODIFIED
+    ' M '   MODIFIED   'AM ' MODIFIED ' T ' MODIFIED  'R  ' RENAMED
+    ' D '   DELETED    'D  ' DELETED  'UU ' UNMERGED
+  )
+  for prefix constant in "${(@kv)prefix_map}"; do
+    [[ "$status_text" =~ "^${prefix}" ]] && statuses_seen[$constant]=1
+  done
+
+  local -A prompt_map=(
+    UNTRACKED "$ZSH_THEME_GIT_PROMPT_UNTRACKED"
+    ADDED     "$ZSH_THEME_GIT_PROMPT_ADDED"
+    MODIFIED  "$ZSH_THEME_GIT_PROMPT_MODIFIED"
+    RENAMED   "$ZSH_THEME_GIT_PROMPT_RENAMED"
+    DELETED   "$ZSH_THEME_GIT_PROMPT_DELETED"
+    STASHED   "$ZSH_THEME_GIT_PROMPT_STASHED"
+    UNMERGED  "$ZSH_THEME_GIT_PROMPT_UNMERGED"
+    AHEAD     "$ZSH_THEME_GIT_PROMPT_AHEAD"
+    BEHIND    "$ZSH_THEME_GIT_PROMPT_BEHIND"
+    DIVERGED  "$ZSH_THEME_GIT_PROMPT_DIVERGED"
+  )
+  local output=""
+  for c in UNTRACKED ADDED MODIFIED RENAMED DELETED STASHED UNMERGED AHEAD BEHIND DIVERGED; do
+    [[ -n "${statuses_seen[$c]}" ]] && output+="${prompt_map[$c]}"
+  done
+  echo "$output"
+}
 
 function myjj() {
     if command -v jj >/dev/null; then

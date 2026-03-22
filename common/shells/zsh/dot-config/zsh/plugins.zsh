@@ -4,11 +4,3 @@ source "$HOME/.antidote/antidote.zsh"
 
 # loads from  ~/.zsh_plugins.txt
 antidote load
-
-plugins=(
-  git
-  dotenv
-  pip
-  rust
-  #ripgrep
-)
