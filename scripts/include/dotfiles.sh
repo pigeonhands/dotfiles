@@ -19,6 +19,21 @@ _c_green="\033[32m"
 _c_red="\033[31m"
 _c_blue="\033[34m"
 
+_filter_matches() {
+	[[ -z "$DOTFILES_FILTER" ]] || echo "$1" | command grep -E -q "$DOTFILES_FILTER"
+}
+
+_sync_targets_filtered() {
+	local match_against="$1"
+	local target="$2"
+	local base="$3"
+
+	local saved_filter="$DOTFILES_FILTER"
+	_filter_matches "$match_against" && DOTFILES_FILTER=""
+	sync_targets "$target" "$base"
+	DOTFILES_FILTER="$saved_filter"
+}
+
 _realpath() {
 	local path="$1"
 	if command -v realpath > /dev/null 2>&1; then
@@ -68,7 +83,7 @@ get_targets() {
 	for t in $targets; do
 		if [[ -f "$t/.root" ]]; then
 			echo "$t"
-		elif [[ -n "$DOTFILES_FILTER" ]] && basename "$t" | command grep -E -vq "$DOTFILES_FILTER"; then
+		elif ! _filter_matches "$(basename "$t")"; then
 			log "grep filtered out $t" "err"
 		else
 			echo "$t"
@@ -184,12 +199,7 @@ symlink_dir() {
 	local dest="$(destination_path $target $base_dir)"
 
 	if [[ -f "$base_dir/.root" ]]; then
-		local saved_filter="$DOTFILES_FILTER"
-		if [[ -n "$DOTFILES_FILTER" ]] && basename "$target" | command grep -E -q "$DOTFILES_FILTER"; then
-			DOTFILES_FILTER=""
-		fi
-		sync_targets "$target" "$base_dir"
-		DOTFILES_FILTER="$saved_filter"
+		_sync_targets_filtered "$(basename "$target")" "$target" "$base_dir"
 		return
 	fi
 
@@ -222,14 +232,9 @@ sync_targets() {
 }
 
 sync_dotfiles() {
-	local saved_filter="$DOTFILES_FILTER"
-	if [[ -n "$DOTFILES_FILTER" ]] && echo "$1" | command grep -E -q "$DOTFILES_FILTER"; then
-		DOTFILES_FILTER=""
-	fi
-
 	echo ""
 	echo -e "${_c_blue}${_c_bold}## applying '$1'${_c_reset}"
-	sync_targets "$1" "$2"
+	_sync_targets_filtered "$1" "$1" "$2"
 
 	if [[ $DOTFILES_DRY_RUN == "1" ]]; then
 		log "${_c_yellow}run with --apply to do a non dry-run${_c_reset}"
@@ -237,5 +242,4 @@ sync_dotfiles() {
 
 	echo -e "${_c_blue}${_c_bold}## done '$1'${_c_reset}"
 	echo ""
-	DOTFILES_FILTER="$saved_filter"
 }
