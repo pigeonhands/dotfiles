@@ -1,6 +1,0 @@
----
-- hosts: localhost
-  connection: local
-  tasks:
-  - name: Apply dotfiles
-    ansible.builtin.import_tasks: ../tasks/apply_dotfiles.yml
