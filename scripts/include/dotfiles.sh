@@ -18,6 +18,16 @@ _c_cyan="\033[36m"
 _c_green="\033[32m"
 _c_red="\033[31m"
 _c_blue="\033[34m"
+_c_magenta="\033[35m"
+_c_path="\033[96m"
+
+_run() {
+	[[ $DOTFILES_DRY_RUN == "0" ]] && "$@"
+}
+
+_is_force() {
+	[[ "$DOTFILES_FORCE" == "1" ]]
+}
 
 _filter_matches() {
 	[[ -z "$DOTFILES_FILTER" ]] || echo "$1" | command grep -E -q "$DOTFILES_FILTER"
@@ -55,7 +65,7 @@ log() {
 	[[ $DOTFILES_DRY_RUN == "1" ]] && dry_prefix="${_c_yellow}[DRY_RUN]${_c_reset}:"
 
 	if [[ "$2" == "err" ]]; then
-		echo -e "${_c_dim}${dry_prefix}$prefix $1${_c_reset}" >&2
+		echo -e "${dry_prefix}$prefix $1" >&2
 	else
 		echo -e "${dry_prefix}$prefix $1"
 	fi
@@ -68,11 +78,7 @@ remove_item() {
 	flags="$3"
 
 	log "$message"
-
-	if [[ $DOTFILES_DRY_RUN == "0" ]]; then
-
-		rm $flags "$path"
-	fi
+	_run rm $flags "$path"
 
 }
 
@@ -84,7 +90,7 @@ get_targets() {
 		if [[ -f "$t/.root" ]]; then
 			echo "$t"
 		elif ! _filter_matches "$(basename "$t")"; then
-			log "grep filtered out $t" "err"
+			log "${_c_red}grep filtered out${_c_reset} ${_c_path}$t${_c_reset}" "err"
 		else
 			echo "$t"
 		fi
@@ -95,52 +101,50 @@ apply_symlink() {
 	local symlink_target="$1"
 
 	if basename "$symlink_target" | command grep -E -q "^\.($SPECIAL_DOTFILES)\$"; then
-		log "(not symlinking $(basename $symlink_target))"
+		log "${_c_magenta}(not symlinking $(basename $symlink_target))${_c_reset}"
 		return
 	fi
 
 	local dest="$(echo $2 | sed 's/dot-/\./')"
-	local sym_out=" $dest -> $symlink_target"
+	local sym_out=" ${_c_path}$dest${_c_reset} -> ${_c_path}$symlink_target${_c_reset}"
 
 	local full_src="$(_realpath $symlink_target)"
 
 	if [[ -L "$dest" ]]; then
 		existing_symlink="$(readlink $dest)"
 		if [[ "$existing_symlink" == "$full_src" ]]; then
-			log "no change for $sym_out"
+			log "${_c_green}no change for${_c_reset}$sym_out"
 			return
-		elif [[ "$DOTFILES_FORCE" == "1" ]]; then
-			remove_item "$dest" "${_c_red}Deleting${_c_reset} existing symlink at $dest"
+		elif _is_force; then
+			remove_item "$dest" "${_c_red}Deleting${_c_reset} existing symlink at ${_c_path}$dest${_c_reset}"
 		else
-			log "(skip - no force) There is an existing symlink at $dest"
+			log "${_c_magenta}(skip - no force)${_c_reset} There is an existing symlink at ${_c_path}$dest${_c_reset}"
 			return
 		fi
 	fi
 
 	if [[ -f "$dest" ]]; then
-		if [[ "$DOTFILES_FORCE" == "1" ]]; then
-			remove_item "$dest" "${_c_red}Deleting${_c_reset} existing file at $dest"
+		if _is_force; then
+			remove_item "$dest" "${_c_red}Deleting${_c_reset} existing file at ${_c_path}$dest${_c_reset}"
 		else
-			log "(skip - no force) There is an existing file at $dest"
+			log "${_c_magenta}(skip - no force)${_c_reset} There is an existing file at ${_c_path}$dest${_c_reset}"
 			return
 		fi
 	fi
 
 	if [[ -d "$dest" ]]; then
-		if [[ "$DOTFILES_FORCE" == "1" ]]; then
-			remove_item "$dest" "${_c_red}Deleting${_c_reset} existing directory at $dest" "-r"
+		if _is_force; then
+			remove_item "$dest" "${_c_red}Deleting${_c_reset} existing directory at ${_c_path}$dest${_c_reset}" "-r"
 		else
-			log "(skip - no force) There is an existing directory at $dest"
+			log "${_c_magenta}(skip - no force)${_c_reset} There is an existing directory at ${_c_path}$dest${_c_reset}"
 			return
 		fi
 	fi
 
 	log "${_c_green}Symlinking${_c_reset}$sym_out"
 
-	if [[ $DOTFILES_DRY_RUN == "0" ]]; then
-		mkdir -p "$(dirname $dest)"
-		ln -s "$full_src" "$dest"
-	fi
+	_run mkdir -p "$(dirname $dest)"
+	_run ln -s "$full_src" "$dest"
 }
 
 destination_path() {
@@ -170,10 +174,10 @@ remove_intermediate_symlink() {
 
 	if [[ -L "$dest" ]]; then
 		existing_symlink="$(readlink $dest)"
-		if [[ "$DOTFILES_FORCE" == "1" ]]; then
-			remove_item "$dest" "${_c_red}Deleting${_c_reset} intermediate symlink at $dest"
+		if _is_force; then
+			remove_item "$dest" "${_c_red}Deleting${_c_reset} intermediate symlink at ${_c_path}$dest${_c_reset}"
 		else
-			log "(skip - no force) There is an intermediate symlink at $dest"
+			log "${_c_magenta}(skip - no force)${_c_reset} There is an intermediate symlink at ${_c_path}$dest${_c_reset}"
 			return 1
 		fi
 	fi
@@ -223,7 +227,7 @@ sync_targets() {
 	if [[ -n "$targets" ]]; then
 		for t in $targets; do
 			echo ""
-			log "${_c_cyan}${_c_bold}Applying${_c_reset} $t"
+			log "${_c_cyan}${_c_bold}Applying${_c_reset} ${_c_path}$t${_c_reset}"
 			log_tab_index=$((log_tab_index + 1))
 			symlink_dir "$t"
 			log_tab_index=$((log_tab_index - 1))

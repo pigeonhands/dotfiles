@@ -31,6 +31,6 @@ source "$scripts/include/dotfiles.sh"
 
 cd "$scripts/.."
 
-log "Working from $(pwd)"
+log "Working from ${_c_path}$(pwd)${_c_reset}"
 
 . "$scripts/sync.sh"
