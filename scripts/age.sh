@@ -45,7 +45,7 @@ watch() {
 }
 
 add_secret() {
-	local in="$1"
+	local in="${1/#\~/$HOME}"
 	local out="$2"
 	if [ -z "$in" ] || [ -z "$out" ]; then
 		echo "usage: age.sh add-secret <in> <out>" >&2

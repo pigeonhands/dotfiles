@@ -164,7 +164,7 @@ _decrypt_to_cache() {
 	local cached="$DOTFILES_CACHE_DIR/${source%.age}"
 
 	if [[ "$DOTFILES_ACTION" == "sync" ]]; then
-		log "Decrypting ${_c_path}$source${_c_reset}"
+		log "Decrypting ${_c_path}$source${_c_reset}" "err"
 		_run mkdir -p "$(dirname "$cached")"
 		_run age --decrypt -i "$AGE_KEY_FILE" -o "$cached" "$source"
 	fi
@@ -177,8 +177,15 @@ _action_list() {
 	log "${_c_path}$dest${_c_reset} -> ${_c_path}$src${_c_reset}"
 }
 
+_check_age_freshness() {
+	local src="$1" original="$2"
+	[[ "$original" != *.age ]] && return
+	[[ ! -f "$src" ]] && return
+	[[ "$src" -nt "$original" ]] && log "${_c_yellow}needs encrypt${_c_reset} ${_c_path}$original${_c_reset}"
+}
+
 _action_status() {
-	local src="$1" dest="$2"
+	local src="$1" dest="$2" original="$3"
 	local full_src="$(_realpath "$src")"
 	if [[ -L "$dest" ]]; then
 		if [[ "$(readlink "$dest")" == "$full_src" ]]; then
@@ -191,10 +198,11 @@ _action_status() {
 	else
 		log "${_c_red}missing${_c_reset} ${_c_path}$dest${_c_reset}"
 	fi
+	_check_age_freshness "$src" "$original"
 }
 
 _action_check() {
-	local src="$1" dest="$2"
+	local src="$1" dest="$2" original="$3"
 	local full_src="$(_realpath "$src")"
 	if [[ -L "$dest" ]]; then
 		[[ "$(readlink "$dest")" != "$full_src" ]] && \
@@ -204,6 +212,7 @@ _action_check() {
 	else
 		log "${_c_red}missing${_c_reset} ${_c_path}$dest${_c_reset}"
 	fi
+	_check_age_freshness "$src" "$original"
 }
 
 _action_backup() {
@@ -244,8 +253,8 @@ symlink_item() {
 
 	case "$DOTFILES_ACTION" in
 	"list")   _action_list "$src" "$dest" ;;
-	"status") _action_status "$src" "$dest" ;;
-	"check")  _action_check "$src" "$dest" ;;
+	"status") _action_status "$src" "$dest" "$source_file" ;;
+	"check")  _action_check "$src" "$dest" "$source_file" ;;
 	"backup") _action_backup "$dest" "$(_realpath "$src")" ;;
 	"diff")   _action_diff "$src" "$dest" ;;
 	"sync")   apply_symlink "$src" "$dest" ;;
