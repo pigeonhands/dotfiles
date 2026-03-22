@@ -64,7 +64,7 @@ get_targets() {
 	for t in $targets; do
 		if [[ -f "$t/.root" ]]; then
 			echo "$t"
-		elif basename "$t" | command grep -E -vq "$DOTFILES_FILTER"; then
+		elif [[ -n "$DOTFILES_FILTER" ]] && basename "$t" | command grep -E -vq "$DOTFILES_FILTER"; then
 			log "grep filtered out $t" "err"
 		else
 			echo "$t"
@@ -180,7 +180,12 @@ symlink_dir() {
 	local dest="$(destination_path $target $base_dir)"
 
 	if [[ -f "$base_dir/.root" ]]; then
+		local saved_filter="$DOTFILES_FILTER"
+		if [[ -n "$DOTFILES_FILTER" ]] && basename "$target" | command grep -E -q "$DOTFILES_FILTER"; then
+			DOTFILES_FILTER=""
+		fi
 		sync_targets "$target" "$base_dir"
+		DOTFILES_FILTER="$saved_filter"
 		return
 	fi
 
@@ -213,6 +218,10 @@ sync_targets() {
 }
 
 sync_dotfiles() {
+	local saved_filter="$DOTFILES_FILTER"
+	if [[ -n "$DOTFILES_FILTER" ]] && echo "$1" | command grep -E -q "$DOTFILES_FILTER"; then
+		DOTFILES_FILTER=""
+	fi
 
 	echo ""
 	echo "## applying '$1'"
@@ -224,4 +233,5 @@ sync_dotfiles() {
 
 	echo "## done '$1'"
 	echo ""
+	DOTFILES_FILTER="$saved_filter"
 }

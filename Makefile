@@ -1,11 +1,10 @@
 opts ?=
 grep ?=
 
-.PHONY: dotfiles
-dotfiles: 
+.PHONY: dry
+dry:
 	@./scripts/setup.sh $(opts) '$(grep)'
 
-.PHONY: dotfiles-test
-apply: 
+.PHONY: apply
+apply:
 	@./scripts/setup.sh --apply $(opts) '$(grep)'
-
