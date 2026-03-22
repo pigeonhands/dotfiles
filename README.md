@@ -34,6 +34,12 @@ Files ending in `.age` are decrypted on apply and symlinked from `.dotfiles-cach
 2. Generate a key: `age-keygen -o ~/.age/key.txt`
 3. Add your public key to `.age-recipients` (one per line)
 
+For per-machine secrets, place a `.age-recipients` file inside the machine directory — it will be used instead of the root one:
+```
+machines/wagon/.age-recipients   ← used for secrets under machines/wagon/
+.age-recipients                   ← fallback for everything else
+```
+
 **Adding an encrypted file:**
 
 Name the file with an `.age` suffix — the `.age` extension is stripped at the destination:
