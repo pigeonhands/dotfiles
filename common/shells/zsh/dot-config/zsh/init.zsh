@@ -1,6 +1,3 @@
-autoload -U compinit && compinit
-autoload -U bashcompinit && bashcompinit
-
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
   SESSION_TYPE=remote/ssh
 fi
@@ -11,6 +8,9 @@ source ~/.config/zsh/plugins.zsh
 source ~/.config/zsh/smc-theme.zsh
 source ~/.config/zsh/aliases.zsh
 source ~/.config/zsh/exports.zsh
+
+autoload -U compinit && compinit
+autoload -U bashcompinit && bashcompinit
 
 
 #export NVM_DIR="$HOME/.nvm"
@@ -31,16 +31,7 @@ if [[ -f "~/.local/bin/env" ]]; then
     source ~/.local/bin/env
 fi
 
-if command -v fzf-share >/dev/null; then
-  source "$(fzf-share)/key-bindings.zsh"
-  source "$(fzf-share)/completion.zsh"
-elif [ -f /usr/share/fzf/key-bindings.zsh ]; then
-    source /usr/share/fzf/key-bindings.zsh
-    source /usr/share/fzf/completion.zsh
-elif [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
-    source /usr/share/doc/fzf/examples/key-bindings.zsh
-    source /usr/share/doc/fzf/examples/completion.zsh
-fi
+eval "$(fzf --zsh)"
 
 export SSH_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
 
