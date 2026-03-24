@@ -24,6 +24,7 @@ function git_prompt_short_sha() {
   SHA=$(git rev-parse --short HEAD 2>/dev/null) && echo "$ZSH_THEME_GIT_PROMPT_SHA_BEFORE$SHA$ZSH_THEME_GIT_PROMPT_SHA_AFTER"
 }
 
+
 function git_prompt_status() {
   local status_text
   status_text="$(git status --porcelain -b 2>/dev/null)" || return 1
@@ -113,6 +114,27 @@ function precmd() {
 
 function retcode() {}
 
+function vi_mode() {
+    #echo "-[${${KEYMAP/vicmd/N}/(main|viins)/-- I}]"
+    local mode
+    case "$KEYMAP" in
+        vicmd) mode="N"
+        ;;
+        main|viins) mode="I"
+        ;;
+        *) mode="I"
+        ;;
+    esac
+    echo "-[$mode]"
+}
+
+function zle-keymap-select {
+  #VIMODE="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
+  VIMODE="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
+  zle reset-prompt
+}
+zle -N zle-keymap-select
+
 prompt_metadata="$(virtualenv_prompt_info)"
 SHELL_LEVEL=$(($SHLVL - 1))
 
@@ -132,10 +154,10 @@ local user_string="%{$fg[yellow]%}%B%n%b$fg[white]@%{$fg[blue]%}%B%m%b"
 local path_string="%{$fg[white]%}%B%~%b"
 local user_and_path_string="${user_string}:${path_string}"
 local prompt_string="%(!.#.$)"
-local first_line='%{$fg[green]%}┬─$prompt_metadata%{$fg[green]%}[${user_and_path_string}%{$fg[green]%}]─[%{$fg[cyan]%}$(date +%X)%{$fg[green]%}]$(svc_prompts)'
-local second_line='%{$fg[green]%}╰─>%{$fg[red]%}%1{${prompt_string}%}'
+local first_line='%{$fg[green]%}┬─$prompt_metadata%{$fg[green]%}[${user_and_path_string}%{$fg[green]%}]─[%{$fg[cyan]%}$(date +%X)%{$fg[green]%}]$(svc_prompts)$(vi_mode)'
+local second_line='%{$fg[green]%}╰─>%{$fg[red]%}%1{${prompt_string}%} '
 
 
 NEWLINE=$'\n'
-PROMPT="${first_line}${NEWLINE}${second_line}%b%{$reset_color%} "
+PROMPT="${first_line}${NEWLINE}${second_line}%b%{$reset_color%}"
 PS2=$' \e[0;34m%}%B>%{\e[0m%}%b '

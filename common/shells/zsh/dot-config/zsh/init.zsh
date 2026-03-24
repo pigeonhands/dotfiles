@@ -2,6 +2,8 @@ if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
   SESSION_TYPE=remote/ssh
 fi
 
+set -o vi
+
 export SESSION_TYPE="$SESSION_TYPE"
 
 source ~/.config/zsh/plugins.zsh
