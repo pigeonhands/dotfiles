@@ -6,6 +6,15 @@ set -o vi
 
 export SESSION_TYPE="$SESSION_TYPE"
 
+# Where to save the history file
+HISTFILE=~/.zsh_history
+
+# How many lines to keep in the current session
+HISTSIZE=10000
+
+# How many lines to save in the actual file
+SAVEHIST=10000
+
 source ~/.config/zsh/plugins.zsh
 source ~/.config/zsh/smc-theme.zsh
 source ~/.config/zsh/aliases.zsh
