@@ -1,0 +1,6 @@
+// https://yalter.github.io/niri/Configuration:-Outputs
+// niri msg outputs
+output "DP-2" {
+    mode "2560x1440@300.000"
+    scale 1
+}

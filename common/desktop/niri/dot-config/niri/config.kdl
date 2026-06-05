@@ -1,0 +1,42 @@
+// This config is in the KDL format: https://kdl.dev
+// https://yalter.github.io/niri/Configuration:-Introduction
+
+include "binds.kdl"
+include "environment.kdl"
+include "input.kdl"
+include "layout.kdl"
+include "startup.kdl"
+include "window-rule.kdl"
+
+include optional=true "machine-config.kdl"
+
+// https://yalter.github.io/niri/Configuration:-Outputs
+// Remember to uncomment the node by removing "/-"!
+/-output "eDP-1" { //this is currently commented-out/ Niri is jsut detecting displays automatically
+    // off     // Uncomment this line to disable this output.
+    mode "1920x1080@120.030"     // Resolution and, optionally, refresh rate of the output.
+    scale 2                     // You can use integer or fractional scale, for example use 1.5 for 150% scale.
+    transform "normal"          // Transform allows to rotate the output counter-clockwise
+    position x=1280 y=0         // Position of the output in the global coordinate space.
+}
+
+hotkey-overlay {
+    // skip-at-startup     // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
+}
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+
+// https://yalter.github.io/niri/Configuration:-Animations
+animations {
+    // Uncomment to turn off all animations.
+    // off
+}
+
+switch-events { 
+  lid-close { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "sessionMenu" "lockAndSuspend"; } 
+}
+
+
+
+
