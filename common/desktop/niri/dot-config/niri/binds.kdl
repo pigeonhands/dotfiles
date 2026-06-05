@@ -4,7 +4,7 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     Mod+T hotkey-overlay-title="Open Files: nautilus" { spawn "nautilus"; }
-    Mod+Return hotkey-overlay-title="Open a Terminal: Wezterm" { spawn "wezterm"; }
+    Mod+Return hotkey-overlay-title="Open a Terminal: Alacritty" { spawn "alacritty"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
     Mod+Space repeat=false { spawn "vicinae" "toggle"; }
     Mod+D repeat=false { spawn "vicinae" "toggle"; }

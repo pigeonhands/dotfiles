@@ -21,6 +21,11 @@ config.font = wezterm.font("JetBrainsMono NF")
 -- config.font_size = 14.0
 
 config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
+
+-- config.max_fps = 60
+-- config.front_end = "WebGpu"
+-- config.webgpu_power_preference = "HighPerformance"
+
 -- config.keys = {
 -- 	{
 -- 		key = "V",
@@ -45,5 +50,4 @@ config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 --   saturation = 0.9,
 --   brightness = 0.5,
 -- }
-
 return config
