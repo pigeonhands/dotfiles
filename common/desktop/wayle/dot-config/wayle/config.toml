@@ -1,0 +1,72 @@
+[general]
+font-sans = "JetBrains Mono NL"
+font-mono = "JetBrainsMono Nerd Font Propo"
+tearing-mode = true
+
+[bar]
+scale = 0.8
+shadow = "floating"
+
+[[bar.layout]]
+monitor = "*"
+show = true
+left = [
+    "clock",
+    "weather",
+    { name = "system", modules = [
+    "cpu",
+    "ram",
+    "storage",
+    "netstat",
+] },
+    "media",
+]
+center = [
+    "niri-workspaces"
+]
+right = [
+    "systray",
+    "network",
+    "bluetooth",
+    "cava",
+    "volume",
+    "notifications",
+    "dashboard",
+]
+
+[styling]
+rounding = "none"
+
+[styling.palette]
+bg = "#1d2021"
+surface = "#282828"
+elevated = "#3c3836"
+fg = "#ebdbb2"
+fg-muted = "#d5c4a1"
+primary = "#83a598"
+red = "#fb4934"
+yellow = "#fabd2f"
+green = "#b8bb26"
+blue = "#8ec07c"
+
+[modules.niri-workspaces]
+hide-trailing-empty = false
+app-icons-show = true
+border-show = true
+
+[osd]
+position = "top-right"
+margin = 0.0
+
+[wallpaper]
+cycling-enabled = true
+cycling-directory = "/home/samm/Pictures/Wallpapers/"
+cycling-same-image = true
+
+
+[modules.netstat]
+icon-name = "ld-arrow-up-down-symbolic"
+
+[modules.weather]
+location = "Wellington, New Zealand"
+
