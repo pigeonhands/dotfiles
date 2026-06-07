@@ -1,5 +1,5 @@
 spawn-at-startup "vicinae" "server"
-//spawn-at-startup "qs" "-c" "noctalia-shell"
-spawn-at-startup "wayle" "panel" "start"
+spawn-at-startup "qs" "-c" "noctalia-shell"
+//spawn-at-startup "wayle" "panel" "start"
 spawn-at-startup "/usr/lib/mate-polkit/polkit-mate-authentication-agent-1"
 spawn-at-startup "fcitx5" "-d"
