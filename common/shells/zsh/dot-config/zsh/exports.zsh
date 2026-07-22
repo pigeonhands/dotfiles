@@ -12,6 +12,7 @@ fi
 if command -v nvim >/dev/null; then
     export EDITOR="nvim"
     export MANPAGER='nvim +Man!'
+    export DIFFPROG="nvim -d" 
 fi
 
 FNM_PATH="/home/sam/.local/share/fnm"

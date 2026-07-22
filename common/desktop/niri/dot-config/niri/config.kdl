@@ -20,6 +20,12 @@ include optional=true "machine-config.kdl"
     position x=1280 y=0         // Position of the output in the global coordinate space.
 }
 
+
+clipboard {
+    // disable middle mouse paste and select-to-copy
+    disable-primary
+}
+
 hotkey-overlay {
     // skip-at-startup     // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
 }
