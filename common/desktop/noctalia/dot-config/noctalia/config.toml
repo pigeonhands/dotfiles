@@ -1,0 +1,124 @@
+config_version = 14
+
+[bar.default]
+center = [ "workspaces" ]
+end = [ "media", "spacer_4", "tray", "notifications", "network", "bluetooth", "volume", "control-center", "session" ]
+start = [
+    "launcher",
+    "caffeine",
+    "spacer_3",
+    "clock",
+    "date",
+    "spacer_2",
+    "cpu",
+    "ram",
+    "temp",
+    "sysmon",
+    "network_tx",
+    "network_rx"
+]
+margin_edge = 0          # distance from the screen edge
+margin_ends = 10          # inset from each end of the bar
+margin_opposite_edge = 0 # extra reserved space on the inward side
+radius = 10               # square corners, like the old flush bar
+
+[location]
+address = "Wellington, New Zealand"
+
+[lockscreen_widgets]
+enabled = false
+schema_version = 2
+widget_order = [ "lockscreen-login-box@HDMI-A-2", "lockscreen-login-box@DP-3" ]
+
+[lockscreen_widgets.grid]
+cell_size = 16
+major_interval = 4
+visible = true
+
+[lockscreen_widgets.widget."lockscreen-login-box@DP-3"]
+box_height = 196.0
+box_width = 810.0
+cx = 1280.0
+cy = 1258.0
+output = "DP-3"
+placement_height = 1440.0
+placement_width = 2560.0
+rotation = 0.0
+type = "login_box"
+
+[lockscreen_widgets.widget."lockscreen-login-box@DP-3".settings]
+background_color = "surface_variant"
+background_opacity = 0.88
+background_radius = 12.0
+center_password_text = false
+input_opacity = 1.0
+input_radius = 6.0
+layout = "regular"
+show_caps_lock = true
+show_keyboard_layout = true
+show_login_button = true
+show_media = true
+show_session_buttons = true
+show_unlock_hint = true
+show_weather = true
+
+[lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-2"]
+box_height = 196.0
+box_width = 810.0
+cx = 960.0
+cy = 898.0
+output = "HDMI-A-2"
+placement_height = 1080.0
+placement_width = 1920.0
+rotation = 0.0
+type = "login_box"
+
+[lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-2".settings]
+background_color = "surface_variant"
+background_opacity = 0.88
+background_radius = 12.0
+center_password_text = false
+input_opacity = 1.0
+input_radius = 6.0
+layout = "regular"
+show_caps_lock = true
+show_keyboard_layout = true
+show_login_button = true
+show_media = true
+show_session_buttons = true
+show_unlock_hint = true
+show_weather = true
+
+[wallpaper]
+directory = "/home/samm/Pictures/Wallpapers"
+
+[wallpaper.default]
+path = "/home/samm/Pictures/Wallpapers/24008964.png"
+
+[wallpaper.last]
+path = "/home/samm/Pictures/Wallpapers/24008964.png"
+
+[widget.media]
+hide_when_no_media = true
+
+[widget.tray]
+drawer = true
+
+[widget.network_rx]
+visualization = "graph"
+
+[widget.network_tx]
+visualization = "graph"
+
+[widget.spacer_2]
+type = "spacer"
+
+[widget.spacer_3]
+type = "spacer"
+
+[widget.spacer_4]
+type = "spacer"
+
+[widget.sysmon]
+stat = "disk_used_pct"
+visualization = "none"

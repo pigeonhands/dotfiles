@@ -1,6 +1,6 @@
 // https://yalter.github.io/niri/Configuration:-Layout
 layout {
-    gaps 16
+    gaps 13
 
     center-focused-column "never"
 
