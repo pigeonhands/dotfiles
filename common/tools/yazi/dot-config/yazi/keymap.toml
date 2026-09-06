@@ -10,3 +10,8 @@ on   = "!"
 for  = "windows"
 run  = 'shell "powershell.exe" --block'
 desc = "Open PowerShell here"
+
+[[mgr.prepend_keymap]]
+on =  "e"
+run = "shell 'nvim .' --block"
+desc = "Open current directory in nvim"
