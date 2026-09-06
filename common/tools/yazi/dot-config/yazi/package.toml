@@ -1,5 +1,7 @@
-[plugin]
-deps = []
+[[plugin.deps]]
+use = "yazi-rs/plugins:diff"
+rev = "4dc7f1b"
+hash = "14558d2829c0aa05e99c57de8f74d199"
 
 [[flavor.deps]]
 use = "dangooddd/kanagawa"

@@ -12,6 +12,11 @@ run  = 'shell "powershell.exe" --block'
 desc = "Open PowerShell here"
 
 [[mgr.prepend_keymap]]
-on =  "e"
+on =  ["g", "o"]
 run = "shell 'nvim .' --block"
 desc = "Open current directory in nvim"
+
+[[mgr.prepend_keymap]]
+on   = "<C-d>"
+run  = "plugin diff"
+desc = "Diff the selected with the hovered file"
