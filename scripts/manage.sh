@@ -31,23 +31,7 @@ cd "$scripts/.."
 
 _run_action() {
 	DOTFILES_ACTION="$1"
-	. "$scripts/sync.sh"
-}
-
-status() {
-	_run_action "status"
-}
-
-check() {
-	_run_action "check"
-}
-
-list() {
-	_run_action "list"
-}
-
-diff_all() {
-	_run_action "diff"
+	. "$scripts/include/targets.sh"
 }
 
 backup() {
@@ -79,10 +63,7 @@ usage() {
 }
 
 case "$command" in
-"status")      status ;;
-"check")       check ;;
-"list")        list ;;
-"diff")        diff_all ;;
+"status" | "check" | "list" | "diff") _run_action "$command" ;;
 "backup")      backup "$@" ;;
 "new-machine") new_machine ;;
 "--help")      usage; exit 0 ;;

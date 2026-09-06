@@ -56,4 +56,4 @@ cd "$scripts/.."
 
 log "Working from ${_c_path}$(pwd)${_c_reset}"
 
-. "$scripts/sync.sh"
+. "$scripts/include/targets.sh"

@@ -1,0 +1,13 @@
+packages:
+  - arch: git 
+  - arch: curl
+  - arch: vim
+  - arch: htop
+  - arch: neovim
+  - arch: foot
+  - arch: alacritty
+  - arch: tmux
+  - arch: zsh
+  - arch: noctalia
+  - arch: yazi
+  - arch: paru:vicinae-bin
