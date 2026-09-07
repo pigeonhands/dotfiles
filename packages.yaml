@@ -7,6 +7,8 @@ packages:
   - arch: foot
   - arch: alacritty
   - arch: tmux
+    post_install: |
+      [ -d ~/.tmux/plugins/tpm ] || git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
   - arch: zsh
   - arch: noctalia
   - arch: yazi
