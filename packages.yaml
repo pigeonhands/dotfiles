@@ -13,3 +13,7 @@ packages:
   - arch: noctalia
   - arch: yazi
   - arch: paru:vicinae-bin
+  - arch: oo7
+  - arch: libsecret
+    post_install: |
+      systemctl --user enable --now oo7-daemon.service

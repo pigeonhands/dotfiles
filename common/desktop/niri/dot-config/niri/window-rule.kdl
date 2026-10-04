@@ -1,5 +1,6 @@
 // https://yalter.github.io/niri/Configuration:-Window-Rules
 
+
 window-rule {
     // Work around WezTerm's initial configure bug
     // by setting an empty default-column-width.
@@ -40,6 +41,8 @@ window-rule {
     // block-out-from "screencast"
 }
 
+
+prefer-no-csd
 // Example: enable rounded corners for all windows.
 // (This example rule is commented out with a "/-" in front.)
 /-window-rule {

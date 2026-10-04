@@ -3,9 +3,16 @@
 output "DP-2" {
     mode "2560x1440@239.970"
     scale 1
+    variable-refresh-rate on-demand=true
 }
 
 output "DP-3" {
     mode "2560x1440@300.000"
     scale 1
+    variable-refresh-rate on-demand=true
+}
+
+window-rule {
+    match app-id=r#"^steam_app_"#
+    variable-refresh-rate true
 }
