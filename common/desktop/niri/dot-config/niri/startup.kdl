@@ -2,5 +2,5 @@
 //spawn-at-startup "qs" "-c" "noctalia-shell"
 spawn-at-startup "noctalia"
 //spawn-at-startup "wayle" "panel" "start"
-spawn-at-startup "/usr/lib/mate-polkit/polkit-mate-authentication-agent-1"
+//spawn-at-startup "/usr/lib/mate-polkit/polkit-mate-authentication-agent-1"
 //spawn-at-startup "fcitx5" "-d" // diabled with $ systemctl --user mask app-org.fcitx.Fcitx5@autostart.servic
