@@ -13,13 +13,14 @@ end = [
     "session",
     "battery"
 ]
+font_weight = 600
 margin_edge = 0
 margin_ends = 10
 margin_opposite_edge = 0
 radius = 10
 start = [
     "launcher",
-    "caffeine",
+    "group:g1",
     "spacer_3",
     "clock",
     "date",
@@ -31,6 +32,17 @@ start = [
     "network_tx",
     "network_rx"
 ]
+
+    [[bar.default.capsule_group]]
+    accordion = false
+    accordion_direction = "end"
+    border_width = 1.0
+    enabled = true
+    fill = "surface_variant"
+    id = "g1"
+    members = [ "caffeine", "notes", "bar" ]
+    opacity = 1.0
+    padding = 6.0
 
 [calendar]
 enabled = true
@@ -174,24 +186,48 @@ widget_order = [ "lockscreen-login-box@eDP-1", "lockscreen-widget-00000000000000
     rotation = 0.0
     type = "weather"
 
+[plugin_settings."noctalia/notes"]
+panel_layer = "overlay"
+
+[plugins]
+enabled = [ "noctalia/kaomoji", "noctalia/notes", "noctalia/timer", "noctalia/screen_recorder" ]
+
 [shell]
+font_family = "JetBrainsMono NFM SemiBold"
 polkit_agent = true
+
+    [shell.animation]
+    speed = 2.0500000305473804
+
+    [shell.launcher]
+    compact = true
+
+        [shell.launcher.providers.panels]
+        global = true
 
 [theme]
 builtin = "Noctalia"
 community_palette = "Oxocarbon"
 mode = "dark"
-source = "builtin"
+source = "wallpaper"
 wallpaper_scheme = "m3-content"
 
 [wallpaper]
 directory = "/home/smc/Pictures/Wallpapers"
 
     [wallpaper.default]
-    path = "/usr/share/noctalia/assets/noctalia-wallpaper.png"
+    path = "/home/smc/Pictures/Wallpapers/5554936.png"
 
     [wallpaper.last]
-    path = "/usr/share/noctalia/assets/noctalia-wallpaper.png"
+    path = "/home/smc/Pictures/Wallpapers/5554936.png"
+
+    [wallpaper.monitors.eDP-1]
+    path = "/home/smc/Pictures/Wallpapers/5554936.png"
+
+[widget.bar]
+capsule = true
+show_idle_on_horizontal = false
+type = "noctalia/timer:bar"
 
 [widget.clock]
 format = "{:%I:%M} {:%P}"
@@ -204,6 +240,9 @@ visualization = "graph"
 
 [widget.network_tx]
 visualization = "graph"
+
+[widget.notes]
+type = "noctalia/notes:notes"
 
 [widget.spacer_2]
 type = "spacer"
@@ -220,4 +259,4 @@ visualization = "none"
 
 [widget.tray]
 drawer = true
-pinned = [ "Fcitx" ]
+pinned = [ "Fcitx", "KDE Connect Indicator", "tray-icon tray app" ]

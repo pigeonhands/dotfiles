@@ -6,8 +6,13 @@ binds {
     Mod+T hotkey-overlay-title="Open Files: nautilus" { spawn "nautilus"; }
     Mod+Return hotkey-overlay-title="Open Terminal: Foot/Alacritty" { spawn "sh" "-c" "if command -v foot >/dev/null 2>&1; then exec foot; else exec alacritty; fi"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
-    Mod+Space repeat=false { spawn "vicinae" "toggle"; }
-    Mod+D repeat=false { spawn "vicinae" "toggle"; }
+    //Mod+Space repeat=false { spawn "vicinae" "toggle"; }
+    //Mod+D repeat=false { spawn "vicinae" "toggle"; }
+    
+    Mod+D repeat=false { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
+    Mod+Space repeat=false { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
+
+    Mod+N repeat=false { spawn "noctalia" "msg" "panel-toggle" "noctalia/notes:panel"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
