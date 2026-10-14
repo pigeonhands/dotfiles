@@ -15,5 +15,6 @@ packages:
   - arch: paru:vicinae-bin
   - arch: oo7
   - arch: libsecret
+  - arch: paru:pipewire-control-center
     post_install: |
       systemctl --user enable --now oo7-daemon.service

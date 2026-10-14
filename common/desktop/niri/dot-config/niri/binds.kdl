@@ -15,6 +15,7 @@ binds {
 
 
     Print repeat=false { spawn "noctalia" "msg" "screenshot-region"; }
+    Mod+Shift+S repeat=false { spawn "noctalia" "msg" "screenshot-region"; }
     Ctrl+Print repeat=false { spawn "noctalia" "msg" "screenshot-fullscreen"; }
     Alt+Print repeat=false { spawn "noctalia" "msg" "screenshot-annotate"; }
 
