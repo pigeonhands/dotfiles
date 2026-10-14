@@ -1,3 +1,5 @@
+setopt PROMPT_SUBST
+
 autoload -U colors && colors
 setopt PROMPT_SUBST
 export VIRTUAL_ENV_DISABLE_PROMPT=1
@@ -154,8 +156,8 @@ local user_string="%{$fg[yellow]%}%B%n%b$fg[white]@%{$fg[blue]%}%B%m%b"
 local path_string="%{$fg[white]%}%B%~%b"
 local user_and_path_string="${user_string}:${path_string}"
 local prompt_string="%(!.#.$)"
-local first_line='%{$fg[green]%}┬─$prompt_metadata%{$fg[green]%}[${user_and_path_string}%{$fg[green]%}]─[%{$fg[cyan]%}$(date +%X)%{$fg[green]%}]$(svc_prompts)$(vi_mode)'
-local second_line='%{$fg[green]%}╰─>%{$fg[red]%}%1{${prompt_string}%} '
+local first_line="%{$fg[green]%}┬─$prompt_metadata%{$fg[green]%}[${user_and_path_string}%{$fg[green]%}]─[%{$fg[cyan]%}\$(date +%X)%{$fg[green]%}]\$(svc_prompts)\$(vi_mode)"
+local second_line="%{$fg[green]%}╰─>%{$fg[red]%}%1{${prompt_string}%} "
 
 
 NEWLINE=$'\n'

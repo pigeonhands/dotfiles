@@ -1,75 +1,29 @@
-if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-  SESSION_TYPE=remote/ssh
-fi
-
+bindkey -v
 set -o vi
 
-export SESSION_TYPE="$SESSION_TYPE"
+ZSH_PLUGIN_MANAGER=${ZSH_PLUGIN_MANAGER:-"zimfw"}
 
-# Where to save the history file
-HISTFILE=~/.zsh_history
+ZIM_COMPINIT_REINITIALIZE=1
+ZSH_DOTFILES_DIR="${0:a:h}"
 
-# How many lines to keep in the current session
-HISTSIZE=10000
-
-# How many lines to save in the actual file
-SAVEHIST=10000
-
-source ~/.config/zsh/plugins.zsh
-source ~/.config/zsh/smc-theme.zsh
-source ~/.config/zsh/aliases.zsh
-source ~/.config/zsh/exports.zsh
-
-autoload -U compinit && compinit
-autoload -U bashcompinit && bashcompinit
-
-
-#export NVM_DIR="$HOME/.nvm"
-#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-#fpath = ($ZSH_CACHE_DIR/completions $fpath)
-
-
-
-command -v zoxide >/dev/null && source <(zoxide init zsh)
-command -v jj >/dev/null && source <(jj util completion zsh)
-
-if command -v noctalia >/dev/null; then
-    source <(noctalia completions zsh | head -n -1)
-    compdef _noctalia noctalia
-fi
-
-
-if [[ -f "~/.cargo/env" ]]; then
-    source ~/.cargo/env
-fi
-
-if [[ -f "~/.local/bin/env" ]]; then
-    source ~/.local/bin/env
-fi
-
-eval "$(fzf --zsh)"
-
-export SSH_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
-
-function start_agent {
-    /usr/bin/ssh-agent -t 1h >| "${SSH_ENV}"
-    chmod 600 "${SSH_ENV}"
-    source "${SSH_ENV}" > /dev/null
+function sorce_config_file() {
+    local file_path="$ZSH_DOTFILES_DIR/$1"
+    if [[ -f "$file_path" ]]; then
+        source "$file_path"
+    fi
 }
 
-if [ -f "${SSH_ENV}" ]; then
-    source "${SSH_ENV}" > /dev/null
-    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent > /dev/null || {
-        start_agent;
-    }
-else
-    start_agent;
-fi
+function load_if_exists() {
+    local config_file="$1"
+    local variable="${2:-$ZSH_PLUGIN_MANAGER}"
 
-keys_file="$HOME/.config/ai/keys.sh"
+    sorce_config_file "$config_file.zsh"
+    sorce_config_file "$config_file.$variable.zsh"
+}
 
-if [[ -f "$keys_file" ]]; then
-  source "$keys_file"
-fi
-
+load_if_exists "plugins"
+load_if_exists "completions"
+load_if_exists "aliases"
+load_if_exists "exports"
+load_if_exists "session"
+load_if_exists "smc-theme"

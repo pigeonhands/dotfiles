@@ -1,0 +1,23 @@
+zmodule environment
+zmodule git
+zmodule input
+zmodule termtitle
+zmodule utility
+
+# 1. Core completion engine MUST load before any completion plugins or fzf-tab
+zmodule completion
+
+# 2. Additional completion definitions & sources
+zmodule zsh-users/zsh-completions --fpath src
+zmodule aloxaf/fzf-tab
+
+# 3. UI helpers & prompt components
+zmodule duration-info
+zmodule git-info
+zmodule prompt-pwd
+# zmodule asciiship
+
+# 4. Behavior & syntax plugins (removed duplicate autosuggestions)
+zmodule zsh-users/zsh-autosuggestions
+zmodule zsh-users/zsh-syntax-highlighting
+zmodule zsh-users/zsh-history-substring-search
