@@ -18,20 +18,30 @@ margin_edge = 0
 margin_ends = 10
 margin_opposite_edge = 0
 radius = 10
-start = [
-    "launcher",
-    "group:g1",
-    "spacer_3",
-    "clock",
-    "date",
-    "spacer_2",
-    "cpu",
-    "ram",
-    "temp",
-    "sysmon",
-    "network_tx",
-    "network_rx"
-]
+start = [ "launcher", "group:g1", "group:g4", "group:g2", "group:g3" ]
+
+    [[bar.default.capsule_group]]
+    accordion = false
+    accordion_direction = "end"
+    border_width = 1.0
+    enabled = true
+    fill = "surface"
+    id = "g1"
+    members = [ "caffeine", "notes", "bar" ]
+    opacity = 1.0
+    padding = 6.0
+
+    [[bar.default.capsule_group]]
+    accordion = false
+    accordion_direction = "end"
+    border = "surface"
+    border_width = 1.0
+    enabled = true
+    fill = "surface_variant"
+    id = "g2"
+    members = [ "cpu", "ram", "sysmon", "temp" ]
+    opacity = 1.0
+    padding = 6.0
 
     [[bar.default.capsule_group]]
     accordion = false
@@ -39,8 +49,19 @@ start = [
     border_width = 1.0
     enabled = true
     fill = "surface_variant"
-    id = "g1"
-    members = [ "caffeine", "notes", "bar" ]
+    id = "g3"
+    members = [ "network_rx", "network_tx" ]
+    opacity = 1.0
+    padding = 6.0
+
+    [[bar.default.capsule_group]]
+    accordion = false
+    accordion_direction = "end"
+    border_width = 1.0
+    enabled = true
+    fill = "surface"
+    id = "g4"
+    members = [ "date", "clock" ]
     opacity = 1.0
     padding = 6.0
 
@@ -232,6 +253,9 @@ type = "noctalia/timer:bar"
 [widget.clock]
 format = "{:%I:%M} {:%P}"
 
+[widget.cpu]
+show_value = false
+
 [widget.media]
 hide_when_no_media = true
 
@@ -244,6 +268,9 @@ visualization = "graph"
 [widget.notes]
 type = "noctalia/notes:notes"
 
+[widget.ram]
+show_value = false
+
 [widget.spacer_2]
 type = "spacer"
 
@@ -254,8 +281,9 @@ type = "spacer"
 type = "spacer"
 
 [widget.sysmon]
+show_value = false
 stat = "disk_used_pct"
-visualization = "none"
+visualization = "gauge"
 
 [widget.tray]
 drawer = true
