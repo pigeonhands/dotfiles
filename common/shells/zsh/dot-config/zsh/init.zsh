@@ -34,6 +34,12 @@ autoload -U bashcompinit && bashcompinit
 command -v zoxide >/dev/null && source <(zoxide init zsh)
 command -v jj >/dev/null && source <(jj util completion zsh)
 
+if command -v noctalia >/dev/null; then
+    source <(noctalia completions zsh | head -n -1)
+    compdef _noctalia noctalia
+fi
+
+
 if [[ -f "~/.cargo/env" ]]; then
     source ~/.cargo/env
 fi

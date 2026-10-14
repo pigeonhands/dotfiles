@@ -1,5 +1,5 @@
 [bar.default]
-center = [ "workspaces" ]
+center = [ "workspaces", "recorder" ]
 end = [
     "media",
     "spacer_4",
@@ -20,6 +20,10 @@ margin_opposite_edge = 0
 radius = 10
 start = [ "launcher", "group:g1", "group:g4", "group:g2", "group:g3" ]
 
+    [bar.default.dead_zone.actions]
+    left = "panel-toggle control-center home"
+    middle = "annotate"
+
     [[bar.default.capsule_group]]
     accordion = false
     accordion_direction = "end"
@@ -27,7 +31,7 @@ start = [ "launcher", "group:g1", "group:g4", "group:g2", "group:g3" ]
     enabled = true
     fill = "surface"
     id = "g1"
-    members = [ "caffeine", "notes", "bar" ]
+    members = [ "caffeine", "notes", "bar", "screenshot" ]
     opacity = 1.0
     padding = 6.0
 
@@ -67,6 +71,27 @@ start = [ "launcher", "group:g1", "group:g4", "group:g2", "group:g3" ]
 
 [calendar]
 enabled = true
+
+[control_center.calendar]
+show_events_card = false
+
+[[control_center.shortcuts]]
+type = "wifi"
+
+[[control_center.shortcuts]]
+type = "bluetooth"
+
+[[control_center.shortcuts]]
+type = "caffeine"
+
+[[control_center.shortcuts]]
+type = "nightlight"
+
+[[control_center.shortcuts]]
+type = "notification"
+
+[[control_center.shortcuts]]
+type = "noctalia/screen_recorder:toggle"
 
 [idle]
 behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]
@@ -207,8 +232,14 @@ widget_order = [ "lockscreen-login-box@eDP-1", "lockscreen-widget-00000000000000
     rotation = 0.0
     type = "weather"
 
+[plugin_settings."noctalia/kaomoji"]
+notify_on_copy = false
+
 [plugin_settings."noctalia/notes"]
 panel_layer = "overlay"
+
+[plugin_settings."noctalia/screen_recorder"]
+hide_inactive = true
 
 [plugins]
 enabled = [ "noctalia/kaomoji", "noctalia/notes", "noctalia/timer", "noctalia/screen_recorder" ]
@@ -225,6 +256,12 @@ polkit_agent = true
 
         [shell.launcher.providers.panels]
         global = true
+
+    [shell.panel]
+    control_center_position = "top_left"
+
+    [shell.screenshot]
+    directory = "~/Pictures/Screenshots"
 
 [theme]
 builtin = "Noctalia"
@@ -271,6 +308,12 @@ type = "noctalia/notes:notes"
 [widget.ram]
 show_value = false
 
+[widget.recorder]
+type = "noctalia/screen_recorder:recorder"
+
+[widget.screenshot.actions]
+left = "screenshot-annotate"
+
 [widget.spacer_2]
 type = "spacer"
 
@@ -288,3 +331,6 @@ visualization = "gauge"
 [widget.tray]
 drawer = true
 pinned = [ "Fcitx", "KDE Connect Indicator", "tray-icon tray app" ]
+
+[widgets.screen_recorder]
+hide_inactive = true

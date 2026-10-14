@@ -11,8 +11,12 @@ binds {
     
     Mod+D repeat=false { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
     Mod+Space repeat=false { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
-
     Mod+N repeat=false { spawn "noctalia" "msg" "panel-toggle" "noctalia/notes:panel"; }
+
+
+    Print repeat=false { spawn "noctalia" "msg" "screenshot-region"; }
+    Ctrl+Print repeat=false { spawn "noctalia" "msg" "screenshot-fullscreen"; }
+    Alt+Print repeat=false { spawn "noctalia" "msg" "screenshot-annotate"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
@@ -247,9 +251,9 @@ binds {
     // Mod+Space       { switch-layout "next"; }
     // Mod+Shift+Space { switch-layout "prev"; }
 
-    Print { screenshot; }
-    Ctrl+Print { screenshot-screen; }
-    Alt+Print { screenshot-window; }
+    //Print { screenshot; }
+    //Ctrl+Print { screenshot-screen; }
+    //Alt+Print { screenshot-window; }
 
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here
