@@ -1,8 +1,11 @@
+# vim:et sts=2 sw=2 ft=zsh
+
 zmodule environment
 zmodule git
 zmodule input
 zmodule termtitle
 zmodule utility
+zmodule fzf
 
 # 1. Core completion engine MUST load before any completion plugins or fzf-tab
 zmodule completion

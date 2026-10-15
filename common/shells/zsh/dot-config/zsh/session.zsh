@@ -1,46 +1,34 @@
-if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-  SESSION_TYPE=remote/ssh
-fi
+SESSION_TYPE="local"
+[[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]] && SESSION_TYPE="remote/ssh"
+export SESSION_TYPE
 
-export SESSION_TYPE="$SESSION_TYPE"
+export HISTFILE="${HOME}/.zsh_history"
+export HISTSIZE=10000
+export SAVEHIST=10000
 
-# Where to save the history file
-HISTFILE=~/.zsh_history
+local -a env_files=(
+    "$HOME/.cargo/env"
+    "$HOME/.local/bin/env"
+    "$HOME/.config/ai/keys.sh"
+)
 
-# How many lines to keep in the current session
-HISTSIZE=10000
+for env_file in $env_files; do
+    [[ -f "$env_file" ]] && source "$env_file"
+done
 
-# How many lines to save in the actual file
-SAVEHIST=10000
+export SSH_ENV="${XDG_RUNTIME_DIR:-${HOME}/.cache}/ssh-agent.env"
 
-export SSH_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
-
-
-if [[ -f "$HOME/.cargo/env" ]]; then
-    source "$HOME/.cargo/env"
-fi
-
-if [[ -f "$HOME/.local/bin/env" ]]; then
-    source "$HOME/.local/bin/env"
-fi
-
-function start_agent {
+function start_agent() {
     /usr/bin/ssh-agent -t 1h >| "${SSH_ENV}"
     chmod 600 "${SSH_ENV}"
     source "${SSH_ENV}" > /dev/null
 }
 
-if [ -f "${SSH_ENV}" ]; then
+if [[ -f "${SSH_ENV}" ]]; then
     source "${SSH_ENV}" > /dev/null
-    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent > /dev/null || {
-        start_agent;
-    }
+    if [[ -z "$SSH_AGENT_PID" ]] || ! kill -0 "$SSH_AGENT_PID" 2>/dev/null; then
+        start_agent
+    fi
 else
-    start_agent;
-fi
-
-keys_file="$HOME/.config/ai/keys.sh"
-
-if [[ -f "$keys_file" ]]; then
-  source "$keys_file"
+    start_agent
 fi
