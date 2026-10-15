@@ -14,19 +14,23 @@ PACKAGES_FILE = REPO_ROOT / "packages.yaml"
 
 _COLOR = sys.stdout.isatty() and "NO_COLOR" not in os.environ
 
+# Mirrors the semantic palette in include/colors.sh (keep the two in sync).
+_colors = {
+    "reset": "0",
+    "bold": "1",
+    "dim": "2",
+    "success": "32",
+    "action": "33",
+    "warn": "33",
+    "error": "31",
+    "skip": "35",
+    "target": "36",
+    "info": "36",
+    "heading": "34",
+}
+_colors = {name: f"\033[{code}m" if _COLOR else "" for name, code in _colors.items()}
 
-def _c(code):
-    return f"\033[{code}m" if _COLOR else ""
-
-
-
-RESET = _c(0)
-BOLD = _c(1)
-DIM = _c(2)
-RED = _c(31)
-GREEN = _c(32)
-YELLOW = _c(33)
-CYAN = _c(36)
+VERBOSE = False
 
 @dataclass()
 class Package:
@@ -38,19 +42,20 @@ class Package:
 
 
 def log_step(msg):
-    print(f"{BOLD}{GREEN}::{RESET} {BOLD}{msg}{RESET}")
+    print(f"{_colors['bold']}{_colors['success']}::{_colors['reset']} {_colors['bold']}{msg}{_colors['reset']}")
 
 
 def log_info(msg):
-    print(f"{CYAN}  ->{RESET} {msg}")
+    print(f"{_colors['info']}  ->{_colors['reset']} {msg}")
 
 
 def log_skip(msg):
-    print(f"{DIM}  -- {msg} (skipping){RESET}")
+    if VERBOSE:
+        print(f"{_colors['dim']}  -- {msg} (skipping){_colors['reset']}")
 
 
 def log_error(msg):
-    print(f"{RED}{BOLD}!!{RESET} {msg}", file=sys.stderr)
+    print(f"{_colors['error']}{_colors['bold']}!!{_colors['reset']} {msg}", file=sys.stderr)
 
 
 def detect_distro():
@@ -84,7 +89,7 @@ def run_post_install(script):
     if not script:
         return
     log_info("running post_install")
-    print(f"{DIM}{script.rstrip()}{RESET}")
+    print(f"{_colors['dim']}{script.rstrip()}{_colors['reset']}")
     subprocess.run(script, shell=True, executable="/bin/bash", check=True)
 
 
@@ -137,7 +142,13 @@ def read_packages(packages_file: Path, distro: str) -> List[Package]:
 def main():
     parser = argparse.ArgumentParser(description="Install packages from packages.yaml")
     parser.add_argument("--distro", help="distro to install packages for (defaults to the host's)")
+    parser.add_argument(
+        "-v", "--verbose", action="store_true",
+        help="also show 'nothing to do' messages (already installed)",
+    )
     args = parser.parse_args()
+    global VERBOSE
+    VERBOSE = args.verbose
 
     distro = args.distro or detect_distro()
     log_step(f"target distro: {distro}")

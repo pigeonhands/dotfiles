@@ -1,3 +1,15 @@
+_action_verb() {
+	case "$DOTFILES_ACTION" in
+	"list") echo "Listing" ;;
+	"status") echo "Checking status of" ;;
+	"check") echo "Checking" ;;
+	"diff") echo "Diffing" ;;
+	"backup") echo "Backing up" ;;
+	"clean") echo "Cleaning" ;;
+	*) echo "Applying" ;;
+	esac
+}
+
 _sync_targets_filtered() {
 	local match_against="$1"
 	local target="$2"
@@ -17,7 +29,7 @@ get_targets() {
 		if [[ -f "$t/.root" ]]; then
 			echo "$t"
 		elif ! _filter_matches "$(basename "$t")"; then
-			log "${_c_red}grep filtered out${_c_reset} ${_c_path}$t${_c_reset}" "err"
+			log_verbose "${_colors[error]}grep filtered out${_colors[reset]} ${_colors[target]}$t${_colors[reset]}" "err"
 		else
 			echo "$t"
 		fi
@@ -37,6 +49,25 @@ symlink_content() {
 	done
 }
 
+sync_targets() {
+	local base_dir="$1"
+	local targets="$(get_targets $base_dir)"
+
+	if [[ -n "$targets" ]]; then
+		local spacer=0
+		for t in $targets; do
+			[[ $spacer == 1 ]] && echo ""
+			local logged_before=$log_count
+			log "${_colors[info]}${_colors[bold]}$(_action_verb)${_colors[reset]} ${_colors[target]}$t${_colors[reset]}"
+			log_tab_index=$((log_tab_index + 1))
+			symlink_dir "$t"
+			log_tab_index=$((log_tab_index - 1))
+			# more than the header line itself was logged
+			if ((log_count > logged_before + 1)); then spacer=1; else spacer=0; fi
+		done
+	fi
+}
+
 symlink_dir() {
 	local target="$1"
 	local base_dir="${2:-$target}"
@@ -48,11 +79,18 @@ symlink_dir() {
 		return
 	fi
 
+	if [[ "$DOTFILES_ACTION" == "clean" ]]; then
+		clean_dir "$target" "$base_dir"
+	fi
+
 	symlink_content "$target" "$base_dir" "f"
 
 	for target_subdir in $(command find $target -mindepth 1 -maxdepth 1 -type d); do
 		if remove_intermediate_symlink "$target_subdir" "$base_dir"; then
 			if [[ -f "$target_subdir/.fold" ]]; then
+				if [[ "$DOTFILES_ACTION" == "clean" ]]; then
+					clean_dir "$target_subdir" "$base_dir"
+				fi
 				symlink_content "$target_subdir" "$base_dir"
 			else
 				symlink_dir "$target_subdir" "$base_dir"
@@ -61,30 +99,16 @@ symlink_dir() {
 	done
 }
 
-sync_targets() {
-	local base_dir="$1"
-	local targets="$(get_targets $base_dir)"
-
-	if [[ -n "$targets" ]]; then
-		for t in $targets; do
-			echo ""
-			log "${_c_cyan}${_c_bold}Applying${_c_reset} ${_c_path}$t${_c_reset}"
-			log_tab_index=$((log_tab_index + 1))
-			symlink_dir "$t"
-			log_tab_index=$((log_tab_index - 1))
-		done
-	fi
-}
-
 sync_dotfiles() {
 	echo ""
-	echo -e "${_c_blue}${_c_bold}## applying '$1'${_c_reset}"
+	clean_pending=0
+	echo -e "${_colors[heading]}${_colors[bold]}## $(_action_verb | tr '[:upper:]' '[:lower:]') '$1'${_colors[reset]}"
 	_sync_targets_filtered "$1" "$1" "$2"
 
-	if [[ $DOTFILES_DRY_RUN == "1" ]] && [[ "$DOTFILES_ACTION" == "sync" ]]; then
-		log "${_c_yellow}run with --apply to do a non dry-run${_c_reset}"
+	if [[ $DOTFILES_DRY_RUN == "1" ]] && { [[ "$DOTFILES_ACTION" == "sync" ]] || { [[ "$DOTFILES_ACTION" == "clean" ]] && ((clean_pending > 0)); }; }; then
+		log "${_colors[warn]}run with --apply to do a non dry-run${_colors[reset]}"
 	fi
 
-	echo -e "${_c_blue}${_c_bold}## done '$1'${_c_reset}"
+	echo -e "${_colors[heading]}${_colors[bold]}## done '$1'${_colors[reset]}"
 	echo ""
 }

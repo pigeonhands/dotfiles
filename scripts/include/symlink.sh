@@ -2,42 +2,42 @@ apply_symlink() {
 	local symlink_target="$1"
 
 	local dest="$(echo $2 | sed 's/dot-/\./')"
-	local sym_out=" ${_c_path}$dest${_c_reset} -> ${_c_path}$symlink_target${_c_reset}"
+	local sym_out=" ${_colors[target]}$dest${_colors[reset]} -> ${_colors[target]}$symlink_target${_colors[reset]}"
 
 	local full_src="$(_realpath $symlink_target)"
 
 	if [[ -L "$dest" ]]; then
 		existing_symlink="$(readlink $dest)"
 		if [[ "$existing_symlink" == "$full_src" ]]; then
-			log "${_c_green}no change for${_c_reset}$sym_out"
+			log_verbose "${_colors[success]}no change for${_colors[reset]}$sym_out"
 			return
 		elif _is_force; then
-			remove_item "$dest" "${_c_red}Deleting${_c_reset} existing symlink at ${_c_path}$dest${_c_reset}"
+			remove_item "$dest" "${_colors[error]}Deleting${_colors[reset]} existing symlink at ${_colors[target]}$dest${_colors[reset]}"
 		else
-			log "${_c_magenta}(skip - no force)${_c_reset} There is an existing symlink at ${_c_path}$dest${_c_reset}"
+			log "${_colors[skip]}(skip - no force)${_colors[reset]} There is an existing symlink at ${_colors[target]}$dest${_colors[reset]}"
 			return
 		fi
 	fi
 
 	if [[ -f "$dest" ]]; then
 		if _is_force; then
-			remove_item "$dest" "${_c_red}Deleting${_c_reset} existing file at ${_c_path}$dest${_c_reset}"
+			remove_item "$dest" "${_colors[error]}Deleting${_colors[reset]} existing file at ${_colors[target]}$dest${_colors[reset]}"
 		else
-			log "${_c_magenta}(skip - no force)${_c_reset} There is an existing file at ${_c_path}$dest${_c_reset}"
+			log "${_colors[skip]}(skip - no force)${_colors[reset]} There is an existing file at ${_colors[target]}$dest${_colors[reset]}"
 			return
 		fi
 	fi
 
 	if [[ -d "$dest" ]]; then
 		if _is_force; then
-			remove_item "$dest" "${_c_red}Deleting${_c_reset} existing directory at ${_c_path}$dest${_c_reset}" "-r"
+			remove_item "$dest" "${_colors[error]}Deleting${_colors[reset]} existing directory at ${_colors[target]}$dest${_colors[reset]}" "-r"
 		else
-			log "${_c_magenta}(skip - no force)${_c_reset} There is an existing directory at ${_c_path}$dest${_c_reset}"
+			log "${_colors[skip]}(skip - no force)${_colors[reset]} There is an existing directory at ${_colors[target]}$dest${_colors[reset]}"
 			return
 		fi
 	fi
 
-	log "${_c_green}Symlinking${_c_reset}$sym_out"
+	log "${_colors[action]}Symlinking${_colors[reset]}$sym_out"
 
 	_run mkdir -p "$(dirname $dest)"
 	_run ln -s "$full_src" "$dest"
@@ -62,9 +62,9 @@ remove_intermediate_symlink() {
 	if [[ -L "$dest" ]]; then
 		existing_symlink="$(readlink $dest)"
 		if _is_force; then
-			remove_item "$dest" "${_c_red}Deleting${_c_reset} intermediate symlink at ${_c_path}$dest${_c_reset}"
+			remove_item "$dest" "${_colors[error]}Deleting${_colors[reset]} intermediate symlink at ${_colors[target]}$dest${_colors[reset]}"
 		else
-			log "${_c_magenta}(skip - no force)${_c_reset} There is an intermediate symlink at ${_c_path}$dest${_c_reset}"
+			log "${_colors[skip]}(skip - no force)${_colors[reset]} There is an intermediate symlink at ${_colors[target]}$dest${_colors[reset]}"
 			return 1
 		fi
 	fi

@@ -7,6 +7,7 @@ scripts=$(dirname "$0")
 DOTFILES_FILTER=""
 DOTFILES_DRY_RUN="1"
 DOTFILES_FORCE="0"
+DOTFILES_VERBOSE="0"
 
 usage() {
 	echo "usage: setup.sh [options] [filter]"
@@ -15,6 +16,7 @@ usage() {
 	echo "  --apply   apply changes (default is dry run)"
 	echo "  --dry     dry run (default)"
 	echo "  --force   overwrite existing files and symlinks"
+	echo "  -v, --verbose  also show \"nothing to do\" messages (no change, filtered out)"
 	echo "  --help    show this message"
 	echo ""
 	echo "filter:"
@@ -33,6 +35,9 @@ while [[ $# -gt 0 ]]; do
 		;;
 	"--force")
 		DOTFILES_FORCE="1"
+		;;
+	"-v" | "--verbose")
+		DOTFILES_VERBOSE="1"
 		;;
 	"--help")
 		usage
@@ -54,6 +59,6 @@ source "$scripts/include/dotfiles.sh"
 
 cd "$scripts/.."
 
-log "Working from ${_c_path}$(pwd)${_c_reset}"
+log "Working from ${_colors[target]}$(pwd)${_colors[reset]}"
 
 . "$scripts/include/targets.sh"
