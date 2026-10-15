@@ -12,6 +12,8 @@ zstyle ':completion:*:descriptions' format ''
 command -v zoxide >/dev/null && source <(zoxide init zsh)
 command -v jj >/dev/null && source <(jj util completion zsh)
 
+command -v niri >/dev/null && source <(niri completions zsh | sed "s/line\[2\]/line[1]/g; /'::command/d")
+
 if command -v noctalia >/dev/null; then
     source <(noctalia completions zsh | head -n -1)
     compdef _noctalia noctalia
