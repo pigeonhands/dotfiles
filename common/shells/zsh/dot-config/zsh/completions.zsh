@@ -2,7 +2,16 @@ if [ "$ZSH_PLUGIN_MANAGER" != "zimfw" ]; then
     autoload -U compinit && compinit
     autoload -U bashcompinit && bashcompinit
 
-    eval "$(fzf --zsh)"
+    if command -v fzf >/dev/null; then
+        # Only run fzf --zsh if the binary supports it (v0.48.0+)
+        if [[ $(fzf --version 2>/dev/null | awk '{print $1}') > "0.48.0" ]]; then
+            eval "$(fzf --zsh)"
+        else
+            # Fallback for older package-manager versions of fzf
+            [[ -f /usr/share/fzf/key-bindings.zsh ]] && source /usr/share/fzf/key-bindings.zsh
+            [[ -f /usr/share/fzf/completion.zsh ]] && source /usr/share/fzf/completion.zsh
+        fi
+    fi
 fi
 
 #zstyle ':fzf-tab:*' group-colors $'\e[33m' $'\e[34m' $'\e[35m' $'\e[36m'

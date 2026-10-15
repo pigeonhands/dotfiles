@@ -18,14 +18,13 @@ set -ag status-right "#{E:@catppuccin_status_uptime}"
 # set -agF status-right "#{E:@catppuccin_status_battery}"
 
 if-shell '[ "$SESSION_TYPE" = "remote/ssh" ]' {
-    set -g @catppuccin_flavor "frappe"
-    set -g @catppuccin_window_status_style "rounded"
+    set -g @gruvbox-tmux_theme "light"
+    set -g @gruvbox-tmux_window_id_style "dsquare"
+    set -g @gruvbox-tmux_transparent 0
     set-option -g status-position bottom
 
-    set -g status-right "#{E:@catppuccin_status_application}"
-    set -agF status-right "#{E:@catppuccin_status_cpu}"
-    set -ag status-right "#{E:@catppuccin_status_uptime}"
-    set -ag status-right "#[bg=#{@thm_flamingo},fg=#{@thm_crust}]#[reverse]#[noreverse]󰱠 "
-    set -ag status-right "#[fg=#{@thm_fg},bg=#{@thm_mantle}] #(echo \"$SSH_CONNECTION\" | awk '{ print $1 \" -> \" $3 }')"
+    set -g @my_ssh_status '#[fg=#{@gb_fg},bg=#{@gb_bg}] #(echo "$SSH_CONNECTION" | awk '\''{ print $1 " -> " $3 }'\'')'
+
+    set -ag status-right "#{E:@my_ssh_status}"
 }
 

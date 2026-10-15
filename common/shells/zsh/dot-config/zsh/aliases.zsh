@@ -19,3 +19,31 @@ function y() {
 	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd" || builtin true
 	command rm -f -- "$tmp"
 }
+
+# function to rename tmux window to ssh connection
+ssh() {
+    if [[ -n "$TMUX" && -t 0 ]]; then
+        local target_host=""
+        for arg in "$@"; do
+            if [[ "$arg" != -* ]]; then
+                target_host="$arg"
+                break
+            fi
+        done
+        
+        target_host="${target_host#*@}"
+        
+        if [[ -n "$target_host" ]]; then
+            # Target ONLY the current window (-w / set-window-option)
+            tmux set-window-option automatic-rename off >/dev/null 2>&1
+            tmux rename-window "ssh:$target_host"
+        fi
+        
+        command ssh "$@"
+        
+        # Re-enable automatic-rename specifically for this window upon exit
+        tmux set-window-option automatic-rename on >/dev/null 2>&1
+    else
+        command ssh "$@"
+    fi
+}

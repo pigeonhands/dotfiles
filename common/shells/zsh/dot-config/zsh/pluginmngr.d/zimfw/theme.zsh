@@ -66,7 +66,6 @@ function _is_in_terminal_emulator() {
 
 function prompt_shlvl() {
     local shell_level=$(($SHLVL - 1))
-    
 
     # Normalize terminal emulator
     [[ _is_in_terminal_emulator ]] && shell_level=$((shell_level - 1))
@@ -82,9 +81,20 @@ function prompt_shlvl() {
     #echo -n "%(2L.%B%F{yellow}(%L)%f%b .)" # original prompt
 }
 
-# 2. User & Host (SSH Context)
 function prompt_user_host() {
-    echo -n "%(!.%B%F{red}%n%f%b in .${SSH_TTY:+"%B%F{yellow}%n%f%b in "})${SSH_TTY:+"%B%F{green}%m%f%b in "}"
+    local user_style
+
+    if [[ $EUID -eq 0 ]]; then
+        user_style="%B%F{red}%n%f%b"
+    else
+        user_style="%B%F{yellow}%n%f%b"
+    fi
+
+  if [[ -n "$SSH_TTY" ]]; then
+        print -n "${user_style}@%B%F{magenta}ssh(%f%b%B%F{green}%m%f%b%B%F{magenta})%f%b in "
+    else
+        print -n "${user_style}@%B%F{green}%m%f%b in "
+    fi
 }
 
 # 3. Working Directory
