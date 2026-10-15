@@ -10,20 +10,23 @@ layout {
         proportion 0.66667
     }
 
+    preset-window-heights {
+        proportion 0.33333
+        proportion 0.5
+        proportion 1.0
+    }
+
     default-column-width { 
         proportion 0.5
     }
-    // If you leave the brackets empty, the windows themselves will decide their initial width.
-    // default-column-width {}
 
     focus-ring {
-        width 4
+        width 6
 
         //active-color "#262b26"
         inactive-color "#505050"
-        active-gradient from="#38213f" to="#262b26"  angle=45
+        active-gradient from="#38213f88" to="#262b2688"  angle=45
     }
-
 
     shadow {
         on
