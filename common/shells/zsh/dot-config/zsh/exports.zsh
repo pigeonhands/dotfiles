@@ -1,8 +1,6 @@
-typeset -U path
-path=(
-    "$HOME/.local/bin"
-    "$HOME/.cargo/bin"
-    $path
+path+=(
+     "$HOME/.local/bin"
+     "$HOME/.cargo/bin"
 )
 
 # Homebrew integration (macOS)
