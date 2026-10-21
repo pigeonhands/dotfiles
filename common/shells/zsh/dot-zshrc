@@ -1,3 +1,4 @@
 # vim:et sts=2 sw=2 ft=zsh
 
+#zmodload zsh/zprof # run zprof to see results
 source "$HOME/.config/zsh/init.zsh"

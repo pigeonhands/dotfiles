@@ -2,6 +2,8 @@ bindkey -v
 set -o vi
 typeset -aU path
 
+ZSH_AUTOSUGGEST_USE_ASYNC=true
+
 ZSH_AVALIBLE_PLUGIN_MANAGERS=(zimfw antidote)
 
 ZSH_SMC_DEBUG=${ZSH_SMC_DEBUG:-0}
