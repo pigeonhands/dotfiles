@@ -3,3 +3,8 @@ bind -r ` run-shell "tmux display-popup -E 'out=\$(~/.local/bin/cht.sh) && (echo
 
 # tmux-menus plugin activation
 set -g @menus_trigger 'Space'
+
+bind '"' split-window -v -c "#{pane_current_path}"
+bind %   split-window -h -c "#{pane_current_path}"
+bind T rename-window "#{b:pane_current_path}" \; display-message "Mode: Path (#{b:pane_current_path})"
+bind t set-option automatic-rename on \; display-message "Mode: Automatic Renaming (ON)"
