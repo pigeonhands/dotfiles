@@ -1,15 +1,15 @@
 // https://yalter.github.io/niri/Configuration:-Outputs
 // niri msg outputs
 output "DP-2" {
-    mode "2560x1440@239.970"
+    mode "2560x1440@300.00"
     scale 1
-    variable-refresh-rate on-demand=true
+    // variable-refresh-rate on-demand=true
 }
 
 output "DP-3" {
     mode "2560x1440@300.000"
     scale 1
-    variable-refresh-rate on-demand=true
+    // variable-refresh-rate on-demand=true
 }
 
 window-rule {
