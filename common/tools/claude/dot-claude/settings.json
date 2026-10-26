@@ -2,5 +2,7 @@
   "enabledPlugins": {
     "rust-analyzer-lsp@claude-plugins-official": true
   },
-  "tui": "fullscreen"
+  "tui": "fullscreen",
+  "switchModelsOnFlag": true,
+  "hooks": {"SessionStart":[{"matcher":"^(startup|resume|clear|compact|fork)$","hooks":[{"type":"command","command":"bash '/home/samm/.claude/hooks/herdr-agent-state.sh' session","timeout":10}]}]}
 }
