@@ -56,15 +56,6 @@ return {
                 },
             },
 
-            -- ADD OTHER SERVERS HERE
-            -- To have a server automatically installed and configured by mason-lspconfig,
-            -- just add its name to this list with an empty table.
-            -- Example:
-            -- lua_ls = {},
-            -- pyright = {},
-            -- tsserver = {},
-            -- denols = {},
-            -- vtsls = {},
         },
     },
 }
