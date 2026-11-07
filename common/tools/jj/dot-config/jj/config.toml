@@ -8,9 +8,6 @@ email = "git@s-mc.io"
 behavior = "drop"
 backend = "ssh"
 
-[git]
-sign-on-push = true
-
 [ui]
 paginate = "auto"
 pager = ":builtin"
@@ -27,6 +24,7 @@ remote_bookmarks = "red"
 [revsets]
 protected = "remote_branches()"
 exempt = "mine() & ~merges()"
+sign-on-push = true
 
 # [revset-aliases]
 # allowed = "mine() & ~merges()"

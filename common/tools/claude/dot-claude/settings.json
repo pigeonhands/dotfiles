@@ -19,5 +19,6 @@
   },
   "tui": "fullscreen",
   "switchModelsOnFlag": true,
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "feedbackDrafts": "off"
 }
